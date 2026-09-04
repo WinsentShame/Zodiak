@@ -19,7 +19,7 @@ public unsafe class dll_main
 
                 draw.set_window(native.FindWindow(null, "Minecraft"));
                 leave_game.install();
-                client_instance_on_tick.install();
+                //client_instance_on_tick.install();
             }
             catch (Exception ex)
             {

@@ -35,7 +35,8 @@ public static unsafe class client_instance_on_tick
     [UnmanagedCallersOnly(CallConvs = new[] { typeof(CallConvThiscall) })]
     static void on_tick_hook(IntPtr self, int a2, int a3)
     {
-        context.client_instance = self;
+        if (self != IntPtr.Zero)
+            context.client_instance = self;
         original(self, a2, a3);
     }
 }
