@@ -10,7 +10,6 @@ public unsafe class dll_main
     {
         if (reason == 1)
         {
-            try { System.IO.File.AppendAllText("Zodiak_loaded.txt", "DllMain called\n"); } catch { }
             logger.init();
             try
             {
@@ -20,6 +19,7 @@ public unsafe class dll_main
 
                 draw.set_window(native.FindWindow(null, "Minecraft"));
                 leave_game.install();
+                client_instance_on_tick.install();
             }
             catch (Exception ex)
             {

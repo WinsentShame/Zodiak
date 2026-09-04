@@ -14,5 +14,9 @@
         <NativeLibrary Include="src\lib\Minhook.lib" Condition="$(RuntimeIdentifier.StartsWith('win'))" /> 
         <LinkerArg Include="/DEPENDENTLOADFLAG:0x800" Condition="$(RuntimeIdentifier.StartsWith('win'))" />
     </ItemGroup>
+
+	 <ItemGroup>
+	   <Folder Include="src\modules\" />
+	 </ItemGroup>
 	
 </Project>
