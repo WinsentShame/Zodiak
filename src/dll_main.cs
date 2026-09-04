@@ -10,6 +10,7 @@ public unsafe class dll_main
     {
         if (reason == 1)
         {
+            try { System.IO.File.AppendAllText("Zodiak_loaded.txt", "DllMain called\n"); } catch { }
             logger.init();
             try
             {

@@ -4,13 +4,13 @@ namespace Zodiak;
 
 public static unsafe class native
 {
-    [DllImport("minhook")]
+    [DllImport("Minhook")]
     public static extern int MH_Initialize();
 
-    [DllImport("minhook")]
+    [DllImport("Minhook")]
     public static extern int MH_CreateHook(void* pTarget, void* myMethod, void** pOriginal);
 
-    [DllImport("minhook")]
+    [DllImport("Minhook")]
     public static extern void MH_EnableHook(void* pTarget);
 
     [DllImport("kernel32.dll", CharSet = CharSet.Ansi)]
