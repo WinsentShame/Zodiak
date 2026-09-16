@@ -4,35 +4,36 @@ namespace Zodiak;
 
 public static class native_interop
 {
-    [DllImport("minhook", CallingConvention = CallingConvention.Cdecl)]
-    public static extern int MH_Initialize();
+    [DllImport("minhook", EntryPoint = "MH_Initialize", CallingConvention = CallingConvention.Cdecl)]
+    public static extern int mh_initialize();
 
-    [DllImport("minhook", CallingConvention = CallingConvention.Cdecl)]
-    public static extern int MH_Uninitialize();
+    [DllImport("minhook", EntryPoint = "MH_Uninitialize", CallingConvention = CallingConvention.Cdecl)]
+    public static extern int mh_uninitialize();
 
-    [DllImport("minhook", CallingConvention = CallingConvention.Cdecl)]
-    public static extern int MH_CreateHook(nint pTarget, nint pDetour, out nint ppOriginal);
+    [DllImport("minhook", EntryPoint = "MH_CreateHook", CallingConvention = CallingConvention.Cdecl)]
+    public static extern int mh_create_hook(nint Target, nint Detour, out nint Original);
 
-    [DllImport("minhook", CallingConvention = CallingConvention.Cdecl)]
-    public static extern int MH_EnableHook(nint pTarget);
+    [DllImport("minhook", EntryPoint = "MH_EnableHook", CallingConvention = CallingConvention.Cdecl)]
+    public static extern int mh_enable_hook(nint Target);
 
-    [DllImport("minhook", CallingConvention = CallingConvention.Cdecl)]
-    public static extern int MH_DisableHook(nint pTarget);
+    [DllImport("minhook", EntryPoint = "MH_DisableHook", CallingConvention = CallingConvention.Cdecl)]
+    public static extern int mh_disable_hook(nint Target);
 
-    [DllImport("minhook", CallingConvention = CallingConvention.Cdecl)]
-    public static extern int MH_RemoveHook(nint pTarget);
+    [DllImport("minhook", EntryPoint = "MH_RemoveHook", CallingConvention = CallingConvention.Cdecl)]
+    public static extern int mh_remove_hook(nint Target);
 
-    [DllImport("kernel32.dll", CharSet = CharSet.Unicode, SetLastError = true)]
-    public static extern nint GetModuleHandleW(string? lpModuleName);
+    [DllImport("kernel32.dll", EntryPoint = "GetModuleHandleW", CharSet = CharSet.Unicode, SetLastError = true)]
+    public static extern nint get_module_handle_w(string? ModuleName);
 
-    [DllImport("kernel32.dll", SetLastError = true)]
-    public static extern bool VirtualProtect(nint addr, nuint size, uint newProtect, out uint oldProtect);
+    [DllImport("kernel32.dll", EntryPoint = "VirtualProtect", SetLastError = true)]
+    [return: MarshalAs(UnmanagedType.Bool)]
+    public static extern bool virtual_protect(nint Addr, nuint Size, uint NewProtect, out uint OldProtect);
 
-    [DllImport("kernel32.dll", SetLastError = true)]
-    public static extern nuint VirtualQuery(nint lpAddress, out MEMORY_BASIC_INFORMATION lpBuffer, nuint dwLength);
+    [DllImport("kernel32.dll", EntryPoint = "VirtualQuery", SetLastError = true)]
+    public static extern nuint virtual_query(nint Address, out memory_basic_information Buffer, nuint Length);
 
     [StructLayout(LayoutKind.Sequential)]
-    public struct MEMORY_BASIC_INFORMATION
+    public struct memory_basic_information
     {
         public nint BaseAddress;
         public nint AllocationBase;
@@ -42,16 +43,4 @@ public static class native_interop
         public uint Protect;
         public uint Type;
     }
-
-    [DllImport("user32.dll")] public static extern short GetAsyncKeyState(int vKey);
-    [DllImport("user32.dll")] public static extern nint GetForegroundWindow();
-    [DllImport("user32.dll")] public static extern bool GetCursorPos(out POINT p);
-    [DllImport("user32.dll")] public static extern bool ScreenToClient(nint hWnd, ref POINT p);
-    [DllImport("user32.dll")] public static extern bool GetClientRect(nint hWnd, out RECT rc);
-
-    [StructLayout(LayoutKind.Sequential)]
-    public struct POINT { public int X, Y; }
-
-    [StructLayout(LayoutKind.Sequential)]
-    public struct RECT { public int L, T, R, B; }
 }

@@ -5,66 +5,52 @@ namespace Zodiak;
 
 public static unsafe class leave_game
 {
-    private const long LeaveGameRva = 0x119C80;
+    private static delegate* unmanaged[Stdcall]<nint, nint, long> original;
+    private static nint target;
 
-    private static delegate* unmanaged[Stdcall]<nint, nint, long> _original;
-    private static nint _target;
+    public static bool is_installed { get; private set; }
 
-    public static bool IsInstalled { get; private set; }
-
-    [UnmanagedCallersOnly(CallConvs = new[] { typeof(CallConvStdcall) })]
-    public static long Detour(nint self, nint flag)
+    public static bool install()
     {
-        try
+        if (is_installed) return true;
+
+        nint base_address = native_interop.get_module_handle_w(null);
+        if (base_address == 0) { return false; }
+
+        target = base_address + OFFSETS.FUNC.CLIENTINSTANCE_LEAVEGAME;
+
+        nint detour_ptr = (nint)(delegate* unmanaged[Stdcall]<nint, nint, long>)&detour;
+        int st = native_interop.mh_create_hook(target, detour_ptr, out nint OriginalPtr);
+        if (st != 0) { return false; }
+
+        original = (delegate* unmanaged[Stdcall]<nint, nint, long>)OriginalPtr;
+
+        st = native_interop.mh_enable_hook(target);
+        if (st != 0)
         {
-            logger.info("leave_game", $"called self=0x{self:X} flag={flag}");
-            //esp.Clear();
-        }
-        catch { }
-
-        if (_original == null) return 0;
-        return _original(self, flag);
-    }
-
-    public static bool Install()
-    {
-        if (IsInstalled) return true;
-
-        nint baseAddr = native_interop.GetModuleHandleW(null);
-        if (baseAddr == 0) { logger.error("leave_game", "no base"); return false; }
-
-        _target = baseAddr + (nint)LeaveGameRva;
-        logger.info("leave_game", $"base=0x{baseAddr:X}, target=0x{_target:X}");
-
-        nint detourPtr = (nint)(delegate* unmanaged[Stdcall]<nint, nint, long>)&Detour;
-
-        int status = native_interop.MH_CreateHook(_target, detourPtr, out nint originalPtr);
-        if (status != 0) { logger.error("leave_game", $"create: {status}"); return false; }
-
-        _original = (delegate* unmanaged[Stdcall]<nint, nint, long>)originalPtr;
-
-        status = native_interop.MH_EnableHook(_target);
-        if (status != 0)
-        {
-            logger.error("leave_game", $"enable: {status}");
-            native_interop.MH_RemoveHook(_target);
-            _original = null;
+            native_interop.mh_remove_hook(target);
+            original = null;
             return false;
         }
 
-        IsInstalled = true;
-        logger.info("leave_game", "hook installed");
+        is_installed = true;
         return true;
     }
 
-    public static void Uninstall()
+    //public static void uninstall()
+    //{
+    //    if (!is_installed) return;
+    //    native_interop.mh_disable_hook(_Target);
+    //    native_interop.mh_remove_hook(_Target);
+    //    _Target = 0;
+    //    original = null;
+    //    is_installed = false;
+    //}
+
+    [UnmanagedCallersOnly(CallConvs = new[] { typeof(CallConvStdcall) })]
+    private static long detour(nint self, nint flag)
     {
-        if (!IsInstalled) return;
-        native_interop.MH_DisableHook(_target);
-        native_interop.MH_RemoveHook(_target);
-        _target = 0;
-        _original = null;
-        IsInstalled = false;
-        logger.info("leave_game", "hook removed");
+        if (original == null) return 0;
+        return original(self, flag);
     }
 }

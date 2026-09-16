@@ -2,40 +2,42 @@ namespace Zodiak;
 
 public static class module_manager
 {
-    private static readonly List<module> _modules = new();
+    private static readonly List<module> _Modules = new();
 
-    public static IReadOnlyList<module> all => _modules;
-    public static int count => _modules.Count;
+    public static IReadOnlyList<module> all => _Modules;
+    public static int count => _Modules.Count;
 
-    public static T register<T>(T m) where T : module
+    public static T register<T>(T M) where T : module
     {
-        _modules.Add(m);
-        return m;
+        _Modules.Add(M);
+        return M;
     }
 
-    public static module? get(string name)
+    public static module? find(string name)
     {
-        for (int i = 0; i < _modules.Count; i++)
-            if (_modules[i].name == name) return _modules[i];
+        for (int I = 0; I < _Modules.Count; I++)
+        {
+            if (string.Equals(_Modules[I].name, name, StringComparison.OrdinalIgnoreCase))
+                return _Modules[I];
+        }
         return null;
     }
 
     public static void update_all()
     {
-        for (int i = 0; i < _modules.Count; i++)
+        for (int I = 0; I < _Modules.Count; I++)
         {
-            var m = _modules[i];
-            if (!m.enabled) continue;
-            try { m.on_update(); }
-            catch (Exception ex) { logger.error("module", $"{m.name}: {ex.Message}"); }
+            var M = _Modules[I];
+            if (!M.enabled) continue;
+            M.on_update(); 
         }
     }
 
     public static void disable_all()
     {
-        for (int i = 0; i < _modules.Count; i++)
+        for (int I = 0; I < _Modules.Count; I++)
         {
-            try { _modules[i].enabled = false; }
+            try { _Modules[I].enabled = false; }
             catch { }
         }
     }

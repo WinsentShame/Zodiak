@@ -1,25 +1,24 @@
-using System.Runtime.InteropServices;
+﻿using System.Runtime.InteropServices;
 
 namespace Zodiak;
 
-public static class Program
+public static class program
 {
     [UnmanagedCallersOnly(EntryPoint = "DllProcessAttach")]
-    public static void OnDllProcessAttach(nint hModule)
+    public static void on_dll_process_attach(nint HModule)
     {
-        logger.init();
-        logger.info("init", "Zodiak loading");
+        int St = native_interop.mh_initialize();
+        if (St != 0) { return; }
 
-        int st = native_interop.MH_Initialize();
-        if (st != 0) { logger.error("init", $"MH_Initialize: {st}"); return; }
+        minecraft_game.install();
+        client_instance.install();
+        chat_response.install();
+        chat_hook.install();
+        level_renderer_camera__setup_fog.install();
+        level_renderer_camera__render_sky.install();
 
-        draw.Install();       
-        overlay.Install();    
-        leave_game.Install();
-        gui.Install();
-
-        //module_manager.register(new fly());
-
-        logger.info("init", $"Zodiak ready ({module_manager.count} modules)");
+        module_manager.register(new help());
+        module_manager.register(new fog_color());
+        module_manager.register(new skybox());
     }
 }
