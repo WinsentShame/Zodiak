@@ -1,20 +1,26 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
-  <PropertyGroup>
-    <TargetFramework>net8.0</TargetFramework>
-    <ImplicitUsings>enable</ImplicitUsings>
-    <Nullable>enable</Nullable>
-	<PublishAot>true</PublishAot>
-	<AllowUnsafeBlocks>true</AllowUnsafeBlocks>
-  </PropertyGroup>
+	<PropertyGroup>
+		<TargetFramework>net8.0</TargetFramework>
+		<ImplicitUsings>enable</ImplicitUsings>
+		<Nullable>enable</Nullable>
+		<PublishAot>true</PublishAot>
+		<AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+		<RuntimeIdentifier>win-x64</RuntimeIdentifier>
+	</PropertyGroup>
 
-  <ItemGroup>
-    <PackageReference Include="Korn" Version="1.0.0" />
-  </ItemGroup>
+	<ItemGroup>
+		<PackageReference Include="NativeDllMain" Version="1.0.0" />
+	</ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="lib\" />
-    <Folder Include="src\hooks\" />
-  </ItemGroup>
+	<ItemGroup>
+		<DirectPInvoke Include="minhook" />
+		<NativeLibrary Include="src\libs\Minhook.lib" Condition="$(RuntimeIdentifier.StartsWith('win'))" />
+		<LinkerArg Include="/DEPENDENTLOADFLAG:0x800" Condition="$(RuntimeIdentifier.StartsWith('win'))" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <Folder Include="src\hooks\other\" />
+	</ItemGroup>
 
 </Project>

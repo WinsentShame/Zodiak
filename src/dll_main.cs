@@ -1,16 +1,25 @@
-﻿global using static korn;
+using System.Runtime.InteropServices;
 
 namespace Zodiak;
 
-public unsafe class dll_main
+public static class Program
 {
-    [EntryPoint]
-    public static bool DllMain(nint hinstDLL, uint fdwReason, nint lpvReserved)
+    [UnmanagedCallersOnly(EntryPoint = "DllProcessAttach")]
+    public static void OnDllProcessAttach(nint hModule)
     {
-        if (fdwReason == 1)
-        {
-            
-        }
-        return true;
+        logger.init();
+        logger.info("init", "Zodiak loading");
+
+        int st = native_interop.MH_Initialize();
+        if (st != 0) { logger.error("init", $"MH_Initialize: {st}"); return; }
+
+        draw.Install();       
+        overlay.Install();    
+        leave_game.Install();
+        gui.Install();
+
+        //module_manager.register(new fly());
+
+        logger.info("init", $"Zodiak ready ({module_manager.count} modules)");
     }
 }
