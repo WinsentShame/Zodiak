@@ -8,8 +8,8 @@ public static unsafe class sky_cubemap
     private const int FACE_SIZE = 0x58;
     private const float PACK_CUBE_SCALE = 800.0f;
 
-    private static nint faces;        
-    private static nint group;        
+    private static nint faces;
+    private static nint group;
     private static bool ready;
     private static bool failed;
     private static bool warned;
@@ -41,7 +41,7 @@ public static unsafe class sky_cubemap
     public static bool load()
     {
         if (ready) { return true; }
-        if (failed) {  return false; }
+        if (failed) { return false; }
 
         nint Group = get_texture_group();
 
@@ -61,7 +61,7 @@ public static unsafe class sky_cubemap
 
         for (int Face = 0; Face < FACE_COUNT; Face++)
         {
-            
+
             nint Location = Marshal.AllocHGlobal(0x48);
             for (int i = 0; i < 0x48; i++) *(byte*)(Location + i) = 0;
 
@@ -138,12 +138,12 @@ public static unsafe class sky_cubemap
         if (client == 0) return 0;
 
         nint slot = client + OFFSETS.FIELD.CLIENTINSTANCE_TEXTURECONTAINER;
-        if (!memory.is_readable(slot, 8)) {  return 0; }
+        if (!memory.is_readable(slot, 8)) { return 0; }
         nint conatiner = *(nint*)slot;
         if (conatiner == 0) return 0;
 
         nint group_slot = conatiner + OFFSETS.FIELD.CLIENTINSTANCE_TEXTUREGROUP;
-        if (!memory.is_readable(group_slot, 8)) {  return 0; }
+        if (!memory.is_readable(group_slot, 8)) { return 0; }
         nint group = *(nint*)group_slot;
         return group;
     }

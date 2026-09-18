@@ -9,7 +9,8 @@ public sealed class skybox : module
     public override void on_enable()
     {
         level_renderer_camera_render_sky.active = true;
-        level_renderer_camera_render_sky.set_hide(true);   
+        level_renderer_camera_render_sky.set_hide(true);
+        level_renderer_camera_render_sky.set_time_of_day_patch(true);
 
         if (sky_cubemap.load())
             chat_response.success("Skybox включен.");
@@ -20,7 +21,8 @@ public sealed class skybox : module
     public override void on_disable()
     {
         level_renderer_camera_render_sky.active = false;
-        level_renderer_camera_render_sky.set_hide(false); 
+        level_renderer_camera_render_sky.set_hide(false);
+        level_renderer_camera_render_sky.set_time_of_day_patch(false);
         sky_cubemap.unload();
         chat_response.info("Skybox выключен.");
     }

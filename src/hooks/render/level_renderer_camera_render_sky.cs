@@ -6,21 +6,23 @@ namespace Zodiak;
 public static unsafe class level_renderer_camera_render_sky
 {
     private const string HIDE_SKY_SIGNATURE = "0F 85 ?? ?? ?? ?? 48 8D 54 24 30 E8 ?? ?? ?? ?? 90 48 8B 5C 24 30";
+    private const string TIME_OF_DAY_SIGNATURE = "F3 0F 59 05 0C 67 66 00";
     private const int FOG_COLOUR_SIZE = 12;
-    private const int HIDE_SKY_SIZE = 6;
 
     public static bool active;
 
     private static nint original;
-    private static nint base_address; 
+    private static nint base_address;
     private static byte_patch? hide_sky;
+    private static byte_patch? time_of_day;
 
     public static bool install()
     {
         base_address = native_interop.get_module_handle_w(null);
         if (base_address == 0) { return false; }
 
-        hide_sky = new byte_patch(HIDE_SKY_SIGNATURE, HIDE_SKY_SIZE);
+        hide_sky = new byte_patch(HIDE_SKY_SIGNATURE, 6);
+        time_of_day = new byte_patch(TIME_OF_DAY_SIGNATURE, 8);
 
         nint address = base_address + OFFSETS.FUNC.LEVELRENDERERCAMERA_RENDERSKY;
         nint detour_ptr = (nint)(delegate* unmanaged[Stdcall]<nint, float, float, void>)&hook;
@@ -41,6 +43,13 @@ public static unsafe class level_renderer_camera_render_sky
         if (hide_sky == null) return;
         if (hide) hide_sky.apply(base_address);
         else hide_sky.revert();
+    }
+
+    public static void set_time_of_day_patch(bool active)
+    {
+        if (time_of_day == null) return;
+        if (active) time_of_day.apply(base_address);
+        else time_of_day.revert();
     }
 
     [UnmanagedCallersOnly(CallConvs = new[] { typeof(CallConvStdcall) })]
@@ -71,7 +80,7 @@ public static unsafe class level_renderer_camera_render_sky
 
             draw_cubemap_bright(self);
         }
-        catch 
+        catch
         {
             active = false;
         }
