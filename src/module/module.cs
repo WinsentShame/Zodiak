@@ -6,14 +6,14 @@ public abstract class module
     public string description { get; }
     public category category { get; }
 
-    private bool _Enabled;
+    private bool _enabled;
     public bool enabled
     {
-        get => _Enabled;
+        get => _enabled;
         set
         {
-            if (_Enabled == value) return;
-            _Enabled = value;
+            if (_enabled == value) return;
+            _enabled = value;
 
             if (value) on_enable();
             else on_disable();
@@ -31,7 +31,7 @@ public abstract class module
     public virtual void on_disable() { }
     public virtual void on_update() { }
 
-    public virtual void on_command(string[] Args)
+    public virtual void on_command(string[] args)
     {
         enabled = !enabled;
     }

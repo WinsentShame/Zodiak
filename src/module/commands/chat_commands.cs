@@ -2,15 +2,15 @@
 
 public static class chat_commands
 {
-    public static void dispatch(string Raw)
+    public static void dispatch(string raw)
     {
-        string[] Parts = Raw.Substring(1).Split(' ', StringSplitOptions.RemoveEmptyEntries);
+        string[] parts = raw.Substring(1).Split(' ', StringSplitOptions.RemoveEmptyEntries);
 
-        if (Parts.Length == 0) { help.show(); return; }
+        if (parts.Length == 0) { help.show(); return; }
 
-        module? M = module_manager.find(Parts[0]);
-        if (M == null) { chat_response.error($"Енто что ваще бля: {Parts[0]}"); return; }
+        module? m = module_manager.find(parts[0]);
+        if (m == null) { chat_response.error($"Енто что ваще бля: {parts[0]}"); return; }
 
-        M.on_command(Parts.Skip(1).ToArray());
+        m.on_command(parts.Skip(1).ToArray());
     }
 }

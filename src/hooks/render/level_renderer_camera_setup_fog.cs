@@ -3,7 +3,7 @@ using System.Runtime.InteropServices;
 
 namespace Zodiak;
 
-public static unsafe class level_renderer_camera__setup_fog
+public static unsafe class level_renderer_camera_setup_fog
 {
     private const int FOG_COLOUR_SIZE = 12;
 

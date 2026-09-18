@@ -11,10 +11,10 @@ public static class logger
         lock (lock_obj)
         {
             if (log_file != null) return;
-            string LocalAppData = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
-            string Dir = Path.Combine(LocalAppData, "AerialClient");
-            Directory.CreateDirectory(Dir);
-            log_path = Path.Combine(Dir, "latest.log");
+            string local_appdata = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
+            string dir = Path.Combine(local_appdata, "AerialClient");
+            Directory.CreateDirectory(dir);
+            log_path = Path.Combine(dir, "latest.log");
             log_file = new StreamWriter(log_path, true, Encoding.UTF8) { AutoFlush = true };
             log_file.WriteLine("\n---- session start ----");
         }

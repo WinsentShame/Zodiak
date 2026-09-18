@@ -32,9 +32,9 @@ public static unsafe class chat_hook
     }
 
     [UnmanagedCallersOnly(CallConvs = new[] { typeof(CallConvStdcall) })]
-    private static void hook(nint Self, nint MessagePtr)
+    private static void hook(nint self, nint message_ptr)
     {
-        string? msg = read_string(MessagePtr);
+        string? msg = read_string(message_ptr);
 
         if (msg != null && msg.Length > 0 && msg[0] == '.')
         {
@@ -43,7 +43,7 @@ public static unsafe class chat_hook
         }
 
         if (original != null)
-            original(Self, MessagePtr);
+            original(self, message_ptr);
     }
 
     private static string? read_string(nint ptr)

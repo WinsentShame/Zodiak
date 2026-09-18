@@ -3,19 +3,17 @@ using System.Runtime.InteropServices;
 
 namespace Zodiak;
 
-public static unsafe class level_renderer_camera__render_sky
+public static unsafe class level_renderer_camera_render_sky
 {
+    private const string HIDE_SKY_SIGNATURE = "0F 85 ?? ?? ?? ?? 48 8D 54 24 30 E8 ?? ?? ?? ?? 90 48 8B 5C 24 30";
     private const int FOG_COLOUR_SIZE = 12;
-
-    private const string HIDE_SKY_SIGNATURE =
-        "0F 85 ?? ?? ?? ?? 48 8D 54 24 30 E8 ?? ?? ?? ?? 90 48 8B 5C 24 30";
     private const int HIDE_SKY_SIZE = 6;
 
-    private static nint original;
-    private static byte_patch? hide_sky;
-    private static nint base_address;
-
     public static bool active;
+
+    private static nint original;
+    private static nint base_address; 
+    private static byte_patch? hide_sky;
 
     public static bool install()
     {
@@ -46,7 +44,7 @@ public static unsafe class level_renderer_camera__render_sky
     }
 
     [UnmanagedCallersOnly(CallConvs = new[] { typeof(CallConvStdcall) })]
-    private static void hook(nint Self, float A, float B)
+    private static void hook(nint self, float a, float b)
     {
         try
         {
@@ -55,23 +53,23 @@ public static unsafe class level_renderer_camera__render_sky
             if (!active || !sky_cubemap.refresh())
             {
                 set_hide(false);
-                _original(Self, A, B);
+                _original(self, a, b);
                 return;
             }
 
             set_hide(true);
 
-            float* fog = get_fog(Self);
+            float* fog = get_fog(self);
             var fog_saved = save_fog(fog);
             set_fog(fog, 0f, 0f, 0f);
 
-            _original(Self, A, B);
+            _original(self, a, b);
 
             restore_fog(fog, fog_saved);
 
-            draw_sun_and_stars(Self, A, B);
+            draw_sun_and_stars(self, a, b);
 
-            draw_cubemap_bright(Self);
+            draw_cubemap_bright(self);
         }
         catch 
         {
@@ -92,32 +90,32 @@ public static unsafe class level_renderer_camera__render_sky
         return (fog[0], fog[1], fog[2]);
     }
 
-    private static void restore_fog(float* Fog, (float R, float G, float B)? saved)
+    private static void restore_fog(float* fog, (float R, float G, float B)? saved)
     {
-        if (Fog == null || saved == null) return;
-        Fog[0] = saved.Value.R;
-        Fog[1] = saved.Value.G;
-        Fog[2] = saved.Value.B;
+        if (fog == null || saved == null) return;
+        fog[0] = saved.Value.R;
+        fog[1] = saved.Value.G;
+        fog[2] = saved.Value.B;
     }
 
-    private static void set_fog(float* Fog, float R, float G, float B)
+    private static void set_fog(float* fog, float r, float g, float b)
     {
-        if (Fog == null) return;
-        Fog[0] = R;
-        Fog[1] = G;
-        Fog[2] = B;
+        if (fog == null) return;
+        fog[0] = r;
+        fog[1] = g;
+        fog[2] = b;
     }
 
-    private static void draw_sun_and_stars(nint self, float A, float B)
+    private static void draw_sun_and_stars(nint self, float a, float b)
     {
         var sun_moon = (delegate* unmanaged[Stdcall]<nint, float, byte, void>)
             (base_address + OFFSETS.FUNC.LEVELRENDERERCAMERA_RENDERSUNORMOON);
         var starts = (delegate* unmanaged[Stdcall]<nint, float, float, void>)
             (base_address + OFFSETS.FUNC.LEVELRENDERERCAMERA_RENDERSTARS);
 
-        sun_moon(self, B, 1);
-        sun_moon(self, B, 0);
-        starts(self, B, A);
+        sun_moon(self, b, 1);
+        sun_moon(self, b, 0);
+        starts(self, b, a);
     }
 
     private static void draw_cubemap_bright(nint self)

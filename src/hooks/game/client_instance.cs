@@ -29,14 +29,14 @@ public static unsafe class client_instance
     }
 
     [UnmanagedCallersOnly(CallConvs = new[] { typeof(CallConvStdcall) })]
-    private static void hook(nint Self, int A2, int A3)
+    private static void hook(nint self, int a2, int a3)
     {
         if (Pointer == 0)
         {
-            Pointer = Self;
+            Pointer = self;
         }
 
         if (original != null)
-            original(Self, A2, A3);
+            original(self, a2, a3);
     }
 }

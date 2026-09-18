@@ -14,8 +14,8 @@ public static class program
         client_instance.install();
         chat_response.install();
         chat_hook.install();
-        level_renderer_camera__setup_fog.install();
-        level_renderer_camera__render_sky.install();
+        level_renderer_camera_setup_fog.install();
+        level_renderer_camera_render_sky.install();
 
         module_manager.register(new help());
         module_manager.register(new fog_color());

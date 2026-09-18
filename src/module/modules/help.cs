@@ -6,27 +6,27 @@ public sealed class help : module
     {
     }
 
-    public override void on_command(string[] Args) => show();
+    public override void on_command(string[] args) => show();
 
     public static void show()
     {
         chat_response.def("§aZodiak§f commands§7:");
 
-        foreach (category Cat in Enum.GetValues<category>())
+        foreach (category cat in Enum.GetValues<category>())
         {
-            bool Header = false;
+            bool header = false;
 
-            foreach (var M in module_manager.all)
+            foreach (var m in module_manager.all)
             {
-                if (M.category != Cat) continue;
+                if (m.category != cat) continue;
 
-                if (!Header)
+                if (!header)
                 {
-                    chat_response.line($"§f{Cat}:");
-                    Header = true;
+                    chat_response.line($"§f{cat}:");
+                    header = true;
                 }
 
-                chat_response.line($".{M.name.ToLower()} §7- {M.description}");
+                chat_response.line($".{m.name.ToLower()} §7- {m.description}");
             }
         }
     }

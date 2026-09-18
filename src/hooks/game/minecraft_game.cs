@@ -29,13 +29,13 @@ public static unsafe class minecraft_game
     }
 
     [UnmanagedCallersOnly(CallConvs = new[] { typeof(CallConvStdcall) })]
-    private static void detour(nint Self, nint A2)
+    private static void detour(nint self, nint a2)
     {
-        original(Self, A2);
+        original(self, a2);
 
         if (pointer == 0)
         {
-            pointer = Self;
+            pointer = self;
         }
     }
 }
