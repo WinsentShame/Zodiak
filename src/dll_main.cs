@@ -8,12 +8,14 @@ public static class program
     public static void on_dll_process_attach(nint HModule)
     {
         logger.init();
-        int St = native_interop.mh_initialize();
-        if (St != 0) { return; }
+        int st = native_interop.mh_initialize();
+        if (st != 0) return;
 
         minecraft_game.install();
         client_instance.install();
         chat_response.install();
+        draw.install();    
+        network_peer.install();
         chat_hook.install();
         level_renderer_camera_setup_fog.install();
         level_renderer_camera_render_sky.install();
@@ -21,5 +23,6 @@ public static class program
         module_manager.register(new help());
         module_manager.register(new fog_color());
         module_manager.register(new skybox());
+        module_manager.register(new watermark());   
     }
 }

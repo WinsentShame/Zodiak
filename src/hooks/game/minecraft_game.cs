@@ -33,5 +33,7 @@ public static unsafe class minecraft_game
 
         if (context.MINECRAFT_GAME == 0)
             context.MINECRAFT_GAME = self;
+
+        watermark.tick();
     }
 }

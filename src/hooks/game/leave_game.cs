@@ -47,6 +47,7 @@ public static unsafe class leave_game
     [UnmanagedCallersOnly(CallConvs = new[] { typeof(CallConvStdcall) })]
     private static long detour(nint self, nint flag)
     {
+        context.NETWORK_PEER = 0;
         if (ORIGINAL == null) return 0;
         return ORIGINAL(self, flag);
     }
