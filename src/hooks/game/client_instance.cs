@@ -1,42 +1,37 @@
 ﻿using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 
+using unsafe on_tick_sig = delegate* unmanaged[Stdcall]<nint, int, int, void>;
+
 namespace Zodiak;
 
 public static unsafe class client_instance
 {
-    private static delegate* unmanaged[Stdcall]<nint, int, int, void> original;
-
-    public static nint Pointer { get; private set; }
+    private static on_tick_sig ORIGINAL;
 
     public static bool install()
     {
         nint base_address = native_interop.get_module_handle_w(null);
-        if (base_address == 0) { return false; }
+        if (base_address == 0) return false;
 
         nint address = base_address + OFFSETS.FUNC.CLIENTINSTANCE_ONTICK;
-        nint detour_ptr = (nint)(delegate* unmanaged[Stdcall]<nint, int, int, void>)&hook;
+        on_tick_sig detour_fn = &detour;
+        nint detour_ptr = (nint)detour_fn;
 
-        int st = native_interop.mh_create_hook(address, detour_ptr, out nint Orig);
-        if (st != 0) { return false; }
+        if (!hook.install(address, detour_ptr, out nint original_ptr))
+            return false;
 
-        original = (delegate* unmanaged[Stdcall]<nint, int, int, void>)Orig;
-
-        st = native_interop.mh_enable_hook(address);
-        if (st != 0) {  return false; }
-
+        ORIGINAL = (on_tick_sig)original_ptr;
         return true;
     }
 
     [UnmanagedCallersOnly(CallConvs = new[] { typeof(CallConvStdcall) })]
-    private static void hook(nint self, int a2, int a3)
+    private static void detour(nint self, int a2, int a3)
     {
-        if (Pointer == 0)
-        {
-            Pointer = self;
-        }
+        if (context.CLIENT_INSTANCE == 0)
+            context.CLIENT_INSTANCE = self;
 
-        if (original != null)
-            original(self, a2, a3);
+        if (ORIGINAL != null)
+            ORIGINAL(self, a2, a3);
     }
 }

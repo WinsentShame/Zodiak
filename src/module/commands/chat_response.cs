@@ -2,34 +2,34 @@
 
 public static unsafe class chat_response
 {
-    private const int MSVC_STRING_SIZE = 0x20; // какашка
+    private const int msvc_string_size = 0x20;
 
-    private static delegate* unmanaged[Stdcall]<nint, nint, void> display;
+    private static delegate* unmanaged[Stdcall]<nint, nint, void> DISPLAY;
 
     public static void install()
     {
         nint base_address = native_interop.get_module_handle_w(null);
         if (base_address == 0) return;
 
-        display = (delegate* unmanaged[Stdcall]<nint, nint, void>)
+        DISPLAY = (delegate* unmanaged[Stdcall]<nint, nint, void>)
             (base_address + OFFSETS.FUNC.GUIDATA_DISPLAYCLIENTMESSAGE);
     }
 
     public static void send(string message)
     {
-        if (display == null) return;
+        if (DISPLAY == null) return;
 
-        nint game = minecraft_game.pointer;
+        nint game = context.MINECRAFT_GAME;
         if (game == 0) return;
 
         nint gui_data = *(nint*)(game + OFFSETS.FIELD.MINECRAFTGAME_GUIDATA);
         if (gui_data == 0) return;
 
-        byte* buffer = stackalloc byte[MSVC_STRING_SIZE];
+        byte* buffer = stackalloc byte[msvc_string_size];
         msvc_string.write((nint)buffer, message);
         try
         {
-            display(gui_data, (nint)buffer);
+            DISPLAY(gui_data, (nint)buffer);
         }
         finally
         {

@@ -4,40 +4,40 @@ public static class module_manager
 {
     private static readonly List<module> modules = new();
 
-    public static IReadOnlyList<module> all => modules;
-    public static int count => modules.Count;
+    public static IReadOnlyList<module> ALL => modules;
+    public static int COUNT => modules.Count;
 
-    public static T register<T>(T M) where T : module
+    public static T register<T>(T m) where T : module
     {
-        modules.Add(M);
-        return M;
+        modules.Add(m);
+        return m;
     }
 
     public static module? find(string name)
     {
-        for (int I = 0; I < modules.Count; I++)
+        for (int i = 0; i < modules.Count; i++)
         {
-            if (string.Equals(modules[I].name, name, StringComparison.OrdinalIgnoreCase))
-                return modules[I];
+            if (string.Equals(modules[i].NAME, name, StringComparison.OrdinalIgnoreCase))
+                return modules[i];
         }
         return null;
     }
 
     public static void update_all()
     {
-        for (int I = 0; I < modules.Count; I++)
+        for (int i = 0; i < modules.Count; i++)
         {
-            var M = modules[I];
-            if (!M.enabled) continue;
-            M.on_update(); 
+            var m = modules[i];
+            if (!m.ENABLED) continue;
+            m.on_update();
         }
     }
 
     public static void disable_all()
     {
-        for (int I = 0; I < modules.Count; I++)
+        for (int i = 0; i < modules.Count; i++)
         {
-            try { modules[I].enabled = false; }
+            try { modules[i].ENABLED = false; }
             catch { }
         }
     }

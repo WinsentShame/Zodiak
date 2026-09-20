@@ -16,9 +16,9 @@ public sealed class help : module
         {
             bool header = false;
 
-            foreach (var m in module_manager.all)
+            foreach (var m in module_manager.ALL)
             {
-                if (m.category != cat) continue;
+                if (m.CATEGORY != cat) continue;
 
                 if (!header)
                 {
@@ -26,7 +26,7 @@ public sealed class help : module
                     header = true;
                 }
 
-                chat_response.line($".{m.name.ToLower()} §7- {m.description}");
+                chat_response.line($".{m.NAME.ToLower()} §7- {m.DESCRIPTION}");
             }
         }
     }

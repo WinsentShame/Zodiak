@@ -4,9 +4,9 @@ namespace Zodiak;
 
 public static unsafe class sky_cubemap
 {
-    private const int FACE_COUNT = 6;
-    private const int FACE_SIZE = 0x58;
-    private const float PACK_CUBE_SCALE = 800.0f;
+    private const int face_count = 6;
+    private const int face_size = 0x58;
+    private const float pack_cube_scale = 800.0f;
 
     private static nint faces;
     private static nint group;
@@ -15,7 +15,7 @@ public static unsafe class sky_cubemap
     private static bool warned;
     private static bool drew;
 
-    public static string status { get; private set; } = "not loaded";
+    public static string STATUS { get; private set; } = "not loaded";
 
     private static readonly float[,] normals = new float[6, 3]
     {
@@ -40,46 +40,44 @@ public static unsafe class sky_cubemap
 
     public static bool load()
     {
-        if (ready) { return true; }
-        if (failed) { return false; }
+        if (ready) return true;
+        if (failed) return false;
 
-        nint Group = get_texture_group();
-
-        if (Group == 0)
+        nint texture_group = get_texture_group();
+        if (texture_group == 0)
         {
-            status = "waiting for texture group";
+            STATUS = "waiting for texture group";
             return false;
         }
 
         release_faces();
 
-        faces = Marshal.AllocHGlobal(FACE_COUNT * FACE_SIZE);
+        faces = Marshal.AllocHGlobal(face_count * face_size);
 
-        nint Base = native_interop.get_module_handle_w(null);
-        var Ctor = (delegate* unmanaged[Stdcall]<nint, nint, nint, int, nint>)
-            (Base + OFFSETS.FUNC.TEXTUREPTR_CTOR);
+        nint base_addr = native_interop.get_module_handle_w(null);
+        var ctor = (delegate* unmanaged[Stdcall]<nint, nint, nint, int, nint>)
+            (base_addr + OFFSETS.FUNC.TEXTUREPTR_CTOR);
 
-        for (int Face = 0; Face < FACE_COUNT; Face++)
+        for (int face = 0; face < face_count; face++)
         {
+            nint location = Marshal.AllocHGlobal(0x48);
+            for (int i = 0; i < 0x48; i++) *(byte*)(location + i) = 0;
 
-            nint Location = Marshal.AllocHGlobal(0x48);
-            for (int i = 0; i < 0x48; i++) *(byte*)(Location + i) = 0;
+            msvc_string.write(location + 0x00, $"textures/environment/overworld_cubemap/cubemap_{face}");
+            *(int*)(location + 0x20) = 0;
+            msvc_string.write(location + 0x28, "");
 
-            msvc_string.write(Location + 0x00, $"textures/environment/overworld_cubemap/cubemap_{Face}");
-            *(int*)(Location + 0x20) = 0;
-            msvc_string.write(Location + 0x28, "");
+            nint slot = faces + face_size * face;
+            ctor(slot, texture_group, location, 0);
 
-            nint Slot = faces + FACE_SIZE * Face;
-            Ctor(Slot, Group, Location, 0);
-
-            msvc_string.free(Location + 0x28);
-            msvc_string.free(Location + 0x00);
-            Marshal.FreeHGlobal(Location);
+            msvc_string.free(location + 0x28);
+            msvc_string.free(location + 0x00);
+            Marshal.FreeHGlobal(location);
         }
 
-        group = Group;
+        group = texture_group;
         ready = true;
-        status = "ready";
+        STATUS = "ready";
         return true;
     }
 
@@ -97,17 +95,17 @@ public static unsafe class sky_cubemap
         if (faces != 0) { Marshal.FreeHGlobal(faces); faces = 0; }
         ready = false;
         group = 0;
-        status = "not loaded";
+        STATUS = "not loaded";
     }
 
     public static bool faces_valid()
     {
         if (!ready || faces == 0) return false;
-        for (int Face = 0; Face < FACE_COUNT; Face++)
+        for (int face = 0; face < face_count; face++)
         {
-            nint Slot = faces + FACE_SIZE * Face;
-            nint Group = *(nint*)Slot;
-            if (Group == 0) return false;
+            nint slot = faces + face_size * face;
+            nint group_ptr = *(nint*)slot;
+            if (group_ptr == 0) return false;
         }
         return true;
     }
@@ -116,13 +114,13 @@ public static unsafe class sky_cubemap
     {
         if (faces == 0) return;
 
-        nint base_add = native_interop.get_module_handle_w(null);
+        nint base_addr = native_interop.get_module_handle_w(null);
         var remove = (delegate* unmanaged[Stdcall]<nint, nint, void>)
-            (base_add + OFFSETS.FUNC.TEXTUREGROUP_REMOVEREF);
+            (base_addr + OFFSETS.FUNC.TEXTUREGROUP_REMOVEREF);
 
-        for (int Face = 0; Face < FACE_COUNT; Face++)
+        for (int face = 0; face < face_count; face++)
         {
-            nint slot = faces + FACE_SIZE * Face;
+            nint slot = faces + face_size * face;
             nint group_ptr = *(nint*)slot;
             if (group_ptr == 0) continue;
 
@@ -134,19 +132,20 @@ public static unsafe class sky_cubemap
 
     private static nint get_texture_group()
     {
-        nint client = client_instance.Pointer;
+        nint client = context.CLIENT_INSTANCE;
         if (client == 0) return 0;
 
         nint slot = client + OFFSETS.FIELD.CLIENTINSTANCE_TEXTURECONTAINER;
-        if (!memory.is_readable(slot, 8)) { return 0; }
-        nint conatiner = *(nint*)slot;
-        if (conatiner == 0) return 0;
+        if (!memory.is_readable(slot, 8)) return 0;
+        nint container = *(nint*)slot;
+        if (container == 0) return 0;
 
-        nint group_slot = conatiner + OFFSETS.FIELD.CLIENTINSTANCE_TEXTUREGROUP;
-        if (!memory.is_readable(group_slot, 8)) { return 0; }
-        nint group = *(nint*)group_slot;
-        return group;
+        nint group_slot = container + OFFSETS.FIELD.CLIENTINSTANCE_TEXTUREGROUP;
+        if (!memory.is_readable(group_slot, 8)) return 0;
+        nint group_out = *(nint*)group_slot;
+        return group_out;
     }
+
     public static void draw(nint camera)
     {
         if (!ready || camera == 0) return;
@@ -175,11 +174,11 @@ public static unsafe class sky_cubemap
         nint matrix = *(nint*)(guard + 8);
         if (matrix == 0) return;
 
-        scale(matrix, PACK_CUBE_SCALE, PACK_CUBE_SCALE, PACK_CUBE_SCALE);
+        scale(matrix, pack_cube_scale, pack_cube_scale, pack_cube_scale);
 
-        for (int face = 0; face < FACE_COUNT; face++)
+        for (int face = 0; face < face_count; face++)
         {
-            nint Texture = faces + FACE_SIZE * face;
+            nint texture = faces + face_size * face;
 
             byte* state = (byte*)tess_address;
             state[0x170] = 0;
@@ -192,26 +191,27 @@ public static unsafe class sky_cubemap
             {
                 for (int step = 0; step < 4; step++)
                 {
-                    int I = pass == 0 ? step : 3 - step;
-                    float X, Y, Z;
-                    corner(face, I, out X, out Y, out Z);
-                    vertex_uv(tess_address, X, Y, Z, u[I], v[I]);
+                    int idx = pass == 0 ? step : 3 - step;
+                    float x, y, z;
+                    corner(face, idx, out x, out y, out z);
+                    vertex_uv(tess_address, x, y, z, u[idx], v[idx]);
                 }
             }
 
-            draw2(tess_address, material, Texture);
+            draw2(tess_address, material, texture);
         }
 
-        byte* SB = (byte*)stack_address;
-        SB[0x18] = 1;
-        *(nint*)(SB + 8) -= 0x40;
+        byte* stack = (byte*)stack_address;
+        stack[0x18] = 1;
+        *(nint*)(stack + 8) -= 0x40;
     }
-    private static void corner(int Face, int I, out float X, out float Y, out float Z)
+
+    private static void corner(int face, int idx, out float x, out float y, out float z)
     {
-        float U = u[I] * 2f - 1f;
-        float V = 1f - v[I] * 2f;
-        X = normals[Face, 0] + rights[Face, 0] * U + ups[Face, 0] * V;
-        Y = normals[Face, 1] + rights[Face, 1] * U + ups[Face, 1] * V;
-        Z = normals[Face, 2] + rights[Face, 2] * U + ups[Face, 2] * V;
+        float u_local = u[idx] * 2f - 1f;
+        float v_local = 1f - v[idx] * 2f;
+        x = normals[face, 0] + rights[face, 0] * u_local + ups[face, 0] * v_local;
+        y = normals[face, 1] + rights[face, 1] * u_local + ups[face, 1] * v_local;
+        z = normals[face, 2] + rights[face, 2] * u_local + ups[face, 2] * v_local;
     }
 }

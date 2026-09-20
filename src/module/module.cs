@@ -2,12 +2,12 @@ namespace Zodiak;
 
 public abstract class module
 {
-    public string name { get; }
-    public string description { get; }
-    public category category { get; }
+    public string NAME { get; }
+    public string DESCRIPTION { get; }
+    public category CATEGORY { get; }
 
     private bool _enabled;
-    public bool enabled
+    public bool ENABLED
     {
         get => _enabled;
         set
@@ -22,9 +22,9 @@ public abstract class module
 
     protected module(category category, string name, string description)
     {
-        this.category = category;
-        this.name = name;
-        this.description = description;
+        this.CATEGORY = category;
+        this.NAME = name;
+        this.DESCRIPTION = description;
     }
 
     public virtual void on_enable() { }
@@ -33,6 +33,6 @@ public abstract class module
 
     public virtual void on_command(string[] args)
     {
-        enabled = !enabled;
+        ENABLED = !ENABLED;
     }
 }

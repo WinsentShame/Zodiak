@@ -8,13 +8,13 @@ public sealed class fog_color : module
 
     public override void on_enable()
     {
-        level_renderer_camera_setup_fog.active = true;
-        chat_response.success($"Fog color включен ({level_renderer_camera_setup_fog.r:F2}, {level_renderer_camera_setup_fog.g:F2}, {level_renderer_camera_setup_fog.b:F2}).");
+        level_renderer_camera_setup_fog.ACTIVE = true;
+        chat_response.success($"Fog color включен ({level_renderer_camera_setup_fog.R:F2}, {level_renderer_camera_setup_fog.G:F2}, {level_renderer_camera_setup_fog.B:F2}).");
     }
 
     public override void on_disable()
     {
-        level_renderer_camera_setup_fog.active = false;
+        level_renderer_camera_setup_fog.ACTIVE = false;
         chat_response.success("Fog color выключен.");
     }
 
@@ -22,18 +22,18 @@ public sealed class fog_color : module
     {
         if (args.Length == 0)
         {
-            enabled = !enabled;
+            ENABLED = !ENABLED;
             return;
         }
 
         if (args.try_color(out float r, out float g, out float b))
         {
-            level_renderer_camera_setup_fog.r = Math.Clamp(r, 0f, 1f);
-            level_renderer_camera_setup_fog.g = Math.Clamp(g, 0f, 1f);
-            level_renderer_camera_setup_fog.b = Math.Clamp(b, 0f, 1f);
-            level_renderer_camera_setup_fog.active = true;
-            enabled = true;
-            chat_response.info($"Fog color ({level_renderer_camera_setup_fog.r:F2}, {level_renderer_camera_setup_fog.g:F2}, {level_renderer_camera_setup_fog.b:F2})");
+            level_renderer_camera_setup_fog.R = Math.Clamp(r, 0f, 1f);
+            level_renderer_camera_setup_fog.G = Math.Clamp(g, 0f, 1f);
+            level_renderer_camera_setup_fog.B = Math.Clamp(b, 0f, 1f);
+            level_renderer_camera_setup_fog.ACTIVE = true;
+            ENABLED = true;
+            chat_response.info($"Fog color ({level_renderer_camera_setup_fog.R:F2}, {level_renderer_camera_setup_fog.G:F2}, {level_renderer_camera_setup_fog.B:F2})");
             return;
         }
 
