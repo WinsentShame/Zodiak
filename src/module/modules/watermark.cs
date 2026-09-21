@@ -1,8 +1,5 @@
 ﻿using System.Diagnostics;
 
-using unsafe screen_renderer_singleton_sig = delegate* unmanaged[Stdcall]<nint>;
-using unsafe screen_renderer_fill_sig = delegate* unmanaged[Stdcall]<nint, float, float, float, float, nint, void>;
-
 namespace Zodiak;
 
 public sealed class watermark : module
@@ -14,7 +11,7 @@ public sealed class watermark : module
     private static double last_time;
     private static float fps = 60f;
 
-    public watermark() : base(category.Visual, "Watermark", "Логотип клиента в углу.")
+    public watermark() : base(category.Visual, "Watermark", "Текст проекта / кадры / пинг")
     {
         instance = this;
         ENABLED = true;
@@ -59,15 +56,15 @@ public sealed class watermark : module
         float* colour = stackalloc float[4];
 
         colour[0] = 0.0f; colour[1] = 0.0f; colour[2] = 0.0f; colour[3] = 0.7f;
-        fill(renderer, 5f, 5f, 180f, 32f, (nint)colour);
+        fill(renderer, 5f, 5f, 145f, 20f, (nint)colour);
 
         colour[0] = 0.42f; colour[1] = 0.55f; colour[2] = 1.00f; colour[3] = 1.00f;
-        fill(renderer, 5f, 5f, 8f, 32f, (nint)colour);
+        fill(renderer, 5f, 5f, 6f, 20f, (nint)colour);
 
         int ping = get_ping();
-        string text = $"Zodiak | {(int)fps} fps | {ping} ms";
+        string text = $"Zodiak | {(int)fps,4} fps | {ping,3} ms";
 
-        draw.text(text, 14f, 11f, 1f, 1f, 1f, 1f);
+        font_draw.text(text, 14f, 9f, 1f, 1f, 1f, 1f);
     }
 
     public static void tick()

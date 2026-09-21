@@ -14,7 +14,7 @@ public static class program
         minecraft_game.install();
         client_instance.install();
         chat_response.install();
-        draw.install();    
+        font_draw.install();    
         network_peer.install();
         chat_hook.install();
         level_renderer_camera_setup_fog.install();

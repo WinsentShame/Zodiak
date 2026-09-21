@@ -1,24 +1,24 @@
 ﻿namespace Zodiak;
 
-public static unsafe class draw
+public static unsafe class font_draw
 {
-    private static font_draw_cached_sig DRAW_CACHED;
+    private static font_draw_cached_sig draw_cached;
 
     public static bool install()
     {
         nint base_address = native_interop.get_module_handle_w(null);
         if (base_address == 0) return false;
 
-        DRAW_CACHED = (font_draw_cached_sig)
+        draw_cached = (font_draw_cached_sig)
             (base_address + OFFSETS.FUNC.FONT_DRAWCACHED);
 
         return true;
     }
 
-    public static unsafe void text(string message, float x, float y,
-                                    float r, float g, float b, float a)
+    public static void text(string message, float x, float y,
+                            float r, float g, float b, float a)
     {
-        if (DRAW_CACHED == null) return;
+        if (draw_cached == null) return;
         if (context.MINECRAFT_GAME == 0) return;
 
         nint font = *(nint*)(context.MINECRAFT_GAME + OFFSETS.FIELD.MINECRAFTGAME_FONT);
@@ -35,7 +35,7 @@ public static unsafe class draw
 
         try
         {
-            DRAW_CACHED(font, (nint)str_buf, x, y, (nint)colour,
+            draw_cached(font, (nint)str_buf, x, y, (nint)colour,
                         0, 0, 0, -1, 0);
         }
         finally

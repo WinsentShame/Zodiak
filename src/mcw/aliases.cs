@@ -8,3 +8,5 @@ global using unsafe network_peer_update_sig = delegate* unmanaged[Stdcall]<nint,
 global using unsafe render_sun_moon_sig = delegate* unmanaged[Stdcall]<nint, float, byte, void>;
 global using unsafe render_stars_sig = delegate* unmanaged[Stdcall]<nint, float, float, void>;
 global using unsafe setup_fog_sig = delegate* unmanaged[Stdcall]<nint, nint, float, nint, nint, long>;
+global using unsafe screen_renderer_singleton_sig = delegate* unmanaged[Stdcall]<nint>;
+global using unsafe screen_renderer_fill_sig = delegate* unmanaged[Stdcall]<nint, float, float, float, float, nint, void>;
