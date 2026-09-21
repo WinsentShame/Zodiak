@@ -2,8 +2,6 @@
 using System.Runtime.InteropServices;
 using System.Text;
 
-using unsafe send_chat_sig = delegate* unmanaged[Stdcall]<nint, nint, void>;
-
 namespace Zodiak;
 
 public static unsafe class chat_hook

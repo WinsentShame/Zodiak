@@ -1,8 +1,6 @@
 ﻿using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 
-using unsafe setup_fog_sig = delegate* unmanaged[Stdcall]<nint, nint, float, nint, nint, long>;
-
 namespace Zodiak;
 
 public static unsafe class level_renderer_camera_setup_fog

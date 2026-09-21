@@ -1,9 +1,6 @@
 ﻿using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 
-using unsafe network_peer_update_sig = delegate* unmanaged[Stdcall]<
-    nint, nint, nint, nint, nint, nint, nint, nint, nint, nint, nint, nint, nint, nint, void>;
-
 namespace Zodiak;
 
 public static unsafe class network_peer

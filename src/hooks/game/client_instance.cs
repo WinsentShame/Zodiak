@@ -1,8 +1,6 @@
 ﻿using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 
-using unsafe on_tick_sig = delegate* unmanaged[Stdcall]<nint, int, int, void>;
-
 namespace Zodiak;
 
 public static unsafe class client_instance

@@ -1,10 +1,6 @@
 ﻿using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 
-using unsafe render_sky_sig = delegate* unmanaged[Stdcall]<nint, float, float, void>;
-using unsafe render_sun_moon_sig = delegate* unmanaged[Stdcall]<nint, float, byte, void>;
-using unsafe render_stars_sig = delegate* unmanaged[Stdcall]<nint, float, float, void>;
-
 namespace Zodiak;
 
 public static unsafe class level_renderer_camera_render_sky

@@ -1,9 +1,4 @@
-﻿using unsafe font_draw_cached_sig = delegate* unmanaged[Stdcall]<
-    nint, nint, float, float, nint,
-    byte, byte, nint, int, byte, void>;
-
-
-namespace Zodiak;
+﻿namespace Zodiak;
 
 public static unsafe class draw
 {

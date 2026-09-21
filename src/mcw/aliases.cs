@@ -1,10 +1,10 @@
-﻿using unsafe on_tick_sig = delegate* unmanaged[Stdcall]<nint, int, int, void>;
-using unsafe update_graphics_sig = delegate* unmanaged[Stdcall]<nint, nint, void>;
-using unsafe render_sky_sig = delegate* unmanaged[Stdcall]<nint, float, float, void>;
-using unsafe leave_game_sig = delegate* unmanaged[Stdcall]<nint, nint, long>;
-using unsafe send_chat_sig = delegate* unmanaged[Stdcall]<nint, nint, void>;
-using unsafe font_draw_cached_sig = delegate* unmanaged[Stdcall]<nint, nint, float, float, nint, byte, byte, nint, int, byte, void>;
-using unsafe network_peer_update_sig = delegate* unmanaged[Stdcall]<
-    nint, nint, nint, nint, nint, nint, nint, nint, nint, nint, nint, nint, nint, nint, void>;
-
-namespace Zodiak;
+﻿global using unsafe on_tick_sig = delegate* unmanaged[Stdcall]<nint, int, int, void>;
+global using unsafe update_graphics_sig = delegate* unmanaged[Stdcall]<nint, nint, void>;
+global using unsafe render_sky_sig = delegate* unmanaged[Stdcall]<nint, float, float, void>;
+global using unsafe leave_game_sig = delegate* unmanaged[Stdcall]<nint, nint, long>;
+global using unsafe send_chat_sig = delegate* unmanaged[Stdcall]<nint, nint, void>;
+global using unsafe font_draw_cached_sig = delegate* unmanaged[Stdcall]<nint, nint, float, float, nint, byte, byte, nint, int, byte, void>;
+global using unsafe network_peer_update_sig = delegate* unmanaged[Stdcall]<nint, nint, nint, nint, nint, nint, nint, nint, nint, nint, nint, nint, nint, nint, void>;
+global using unsafe render_sun_moon_sig = delegate* unmanaged[Stdcall]<nint, float, byte, void>;
+global using unsafe render_stars_sig = delegate* unmanaged[Stdcall]<nint, float, float, void>;
+global using unsafe setup_fog_sig = delegate* unmanaged[Stdcall]<nint, nint, float, nint, nint, long>;

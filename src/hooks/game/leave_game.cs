@@ -1,8 +1,6 @@
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 
-using unsafe leave_game_sig = delegate* unmanaged[Stdcall]<nint, nint, long>;
-
 namespace Zodiak;
 
 public static unsafe class leave_game
@@ -31,18 +29,6 @@ public static unsafe class leave_game
         IS_INSTALLED = true;
         return true;
     }
-
-    //public static void uninstall()
-    //{
-    //    if (!IS_INSTALLED) return;
-
-    //    native_interop.mh_disable_hook(target);
-    //    native_interop.mh_remove_hook(target);
-
-    //    target = 0;
-    //    ORIGINAL = null;
-    //    IS_INSTALLED = false;
-    //}
 
     [UnmanagedCallersOnly(CallConvs = new[] { typeof(CallConvStdcall) })]
     private static long detour(nint self, nint flag)

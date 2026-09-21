@@ -1,8 +1,6 @@
 ﻿using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 
-using unsafe update_graphics_sig = delegate* unmanaged[Stdcall]<nint, nint, void>;
-
 namespace Zodiak;
 
 public static unsafe class minecraft_game
