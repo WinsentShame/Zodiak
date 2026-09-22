@@ -64,7 +64,7 @@ public sealed class watermark : module
         int ping = get_ping();
         string text = $"Zodiak | {(int)fps,4} fps | {ping,3} ms";
 
-        font_draw.text(text, 14f, 9f, 1f, 1f, 1f, 1f);
+        font_draw_cached.text(text, 14f, 9f, 1f, 1f, 1f, 1f);
     }
 
     public static void tick()

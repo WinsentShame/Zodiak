@@ -3,52 +3,59 @@ using System.Runtime.InteropServices;
 
 namespace Zodiak;
 
-public static unsafe class level_renderer_camera_render_sky
+public sealed unsafe class level_renderer_camera_render_sky : hook_group
 {
     private const int fog_colour_size = 12;
 
     public static bool ACTIVE;
 
-    private static render_sky_sig ORIGINAL;
+    private static render_sky_sig original;
+    private static render_sun_moon_sig sun_moon;
+    private static render_stars_sig stars;
     private static nint base_address;
+
     private static byte_patch? hide_sky;
     private static nint tod_address;
     private static byte[] tod_original = Array.Empty<byte>();
 
-    public static bool install()
+    protected override string NAME => "level_renderer_camera_render_sky";
+    protected override nint TARGET_OFFSET => OFFSETS.FUNC.LEVELRENDERERCAMERA_RENDERSKY;
+    protected override void store_original(nint ptr) => original = (render_sky_sig)ptr;
+
+    protected override nint detour_ptr()
+    {
+        render_sky_sig fn = &detour;
+        return (nint)fn;
+    }
+
+    protected override void on_installed()
     {
         base_address = native_interop.get_module_handle_w(null);
-        if (base_address == 0) return false;
+
+        sun_moon = (render_sun_moon_sig)
+            (base_address + OFFSETS.FUNC.LEVELRENDERERCAMERA_RENDERSUNORMOON);
+        stars = (render_stars_sig)
+            (base_address + OFFSETS.FUNC.LEVELRENDERERCAMERA_RENDERSTARS);
 
         hide_sky = new byte_patch(signatures.HIDE_SKY, 6);
-
-        nint address = base_address + OFFSETS.FUNC.LEVELRENDERERCAMERA_RENDERSKY;
-        render_sky_sig detour_fn = &detour;
-        nint detour_ptr = (nint)detour_fn;
-
-        if (!hook.install(address, detour_ptr, out nint original_ptr))
-            return false;
-
-        ORIGINAL = (render_sky_sig)original_ptr;
-        return true;
     }
 
     public static void set_hide(bool hide)
     {
-        if (hide_sky == null) return;
+        if (hide_sky == null || base_address == 0) return;
         if (hide) hide_sky.apply(base_address);
         else hide_sky.revert();
     }
 
     public static void set_time_of_day(bool on)
     {
+        if (base_address == 0) return;
+
         if (on)
         {
             if (tod_address == 0)
                 tod_address = memory.find_pattern(base_address, signatures.TIME_OF_DAY);
-
             if (tod_address == 0 || tod_original.Length != 0) return;
-
             tod_original = memory.patch(tod_address, instructions.TIME_OF_DAY_MOVSS);
         }
         else
@@ -62,90 +69,78 @@ public static unsafe class level_renderer_camera_render_sky
     [UnmanagedCallersOnly(CallConvs = new[] { typeof(CallConvStdcall) })]
     private static void detour(nint self, float a, float b)
     {
-        try
+        if (!ACTIVE || !sky_cubemap.refresh())
         {
-            if (!ACTIVE || !sky_cubemap.refresh())
-            {
-                set_hide(false);
-                ORIGINAL(self, a, b);
-                return;
-            }
-
-            set_hide(true);
-
-            float* fog = get_fog(self);
-            var fog_saved = save_fog(fog);
-            set_fog(fog, 0f, 0f, 0f);
-
-            ORIGINAL(self, a, b);
-
-            restore_fog(fog, fog_saved);
-
-            draw_sun_and_stars(self, a, b);
-            draw_cubemap_bright(self);
+            set_hide(false);
+            original(self, a, b);
+            return;
         }
-        catch
-        {
-            ACTIVE = false;
-        }
-    }
 
-    private static float* get_fog(nint self)
-    {
-        nint slot = self + OFFSETS.FIELD.LEVELRENDERERCAMERA_FOGCOLOUR;
-        if (!memory.is_readable(slot, fog_colour_size)) return null;
-        return (float*)slot;
-    }
+        set_hide(true);
 
-    private static (float R, float G, float B)? save_fog(float* fog)
-    {
-        if (fog == null) return null;
-        return (fog[0], fog[1], fog[2]);
-    }
+        var fog = fog_slot(self);
+        var fog_saved = fog.read();
+        fog.write(0f, 0f, 0f);
 
-    private static void restore_fog(float* fog, (float R, float G, float B)? saved)
-    {
-        if (fog == null || saved == null) return;
-        fog[0] = saved.Value.R;
-        fog[1] = saved.Value.G;
-        fog[2] = saved.Value.B;
-    }
+        original(self, a, b);
 
-    private static void set_fog(float* fog, float r, float g, float b)
-    {
-        if (fog == null) return;
-        fog[0] = r;
-        fog[1] = g;
-        fog[2] = b;
-    }
-
-    private static void draw_sun_and_stars(nint self, float a, float b)
-    {
-        var sun_moon = (render_sun_moon_sig)
-            (base_address + OFFSETS.FUNC.LEVELRENDERERCAMERA_RENDERSUNORMOON);
-        var stars = (render_stars_sig)
-            (base_address + OFFSETS.FUNC.LEVELRENDERERCAMERA_RENDERSTARS);
+        fog.write(fog_saved);
 
         sun_moon(self, b, 1);
         sun_moon(self, b, 0);
         stars(self, b, a);
+
+        draw_cubemap_bright(self);
     }
 
     private static void draw_cubemap_bright(nint self)
     {
-        float* fog = get_fog(self);
-        var fog_saved = save_fog(fog);
-        set_fog(fog, 1f, 1f, 1f);
+        var fog = fog_slot(self);
+        var fog_saved = fog.read();
+        fog.write(1f, 1f, 1f);
 
         nint sky_ptr = base_address + OFFSETS.FUNC.G_SKYCOLOUR;
-        bool have_sky = memory.is_readable(sky_ptr, fog_colour_size);
-        float* sky = have_sky ? (float*)sky_ptr : null;
-        var sky_saved = save_fog(sky);
-        set_fog(sky, 1f, 1f, 1f);
+        var sky = fog_slot(sky_ptr);
+        var sky_saved = sky.read();
+        sky.write(1f, 1f, 1f);
 
         sky_cubemap.draw(self);
 
-        restore_fog(sky, sky_saved);
-        restore_fog(fog, fog_saved);
+        sky.write(sky_saved);
+        fog.write(fog_saved);
+    }
+
+    private static fog_ref fog_slot(nint addr)
+    {
+        if (!memory.is_readable(addr, fog_colour_size)) return new fog_ref(null);
+        return new fog_ref((float*)addr);
+    }
+
+    private readonly unsafe struct fog_ref
+    {
+        private readonly float* ptr;
+
+        public fog_ref(float* p) { ptr = p; }
+
+        public bool valid => ptr != null;
+
+        public (float r, float g, float b) read()
+            => valid ? (ptr[0], ptr[1], ptr[2]) : (0f, 0f, 0f);
+
+        public void write((float r, float g, float b) c)
+        {
+            if (!valid) return;
+            ptr[0] = c.r;
+            ptr[1] = c.g;
+            ptr[2] = c.b;
+        }
+
+        public void write(float r, float g, float b)
+        {
+            if (!valid) return;
+            ptr[0] = r;
+            ptr[1] = g;
+            ptr[2] = b;
+        }
     }
 }

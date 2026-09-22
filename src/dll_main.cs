@@ -11,14 +11,16 @@ public static class program
         int st = native_interop.mh_initialize();
         if (st != 0) return;
 
-        minecraft_game.install();
-        client_instance.install();
-        chat_response.install();
-        font_draw.install();    
-        network_peer.install();
-        chat_hook.install();
-        level_renderer_camera_setup_fog.install();
-        level_renderer_camera_render_sky.install();
+        new minecraft_game_update_graphics().install();
+        new client_instance_on_tick().install();
+        new client_intance_leave_game().install();
+        new network_peer_update().install();
+        new minecraft_screen_model_send_chat_message().install();
+        new level_renderer_camera_setup_fog().install();
+        new level_renderer_camera_render_sky().install();
+
+        chat_response.resolve();
+        font_draw_cached.resolve();    
 
         module_manager.register(new help());
         module_manager.register(new fog_color());

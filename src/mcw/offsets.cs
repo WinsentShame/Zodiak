@@ -52,7 +52,6 @@ public static class OFFSETS
         public const nint CLIENTINSTANCE_TEXTURECONTAINER = 0x30;
         public const nint CLIENTINSTANCE_TEXTUREGROUP = 0x80;
 
-        public const nint RAKNETNETWORKPEER_AVERAGE_PING = 228;
         public const nint RAKNETNETWORKPEER_LAST_PING = 232;
     }
 }

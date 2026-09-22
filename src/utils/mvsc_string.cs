@@ -38,6 +38,23 @@ public static unsafe class msvc_string
         }
     }
 
+    public static string? read(nint ptr, int max_size = 4096)
+    {
+        if (ptr == 0) return null;
+        if (!memory.is_readable(ptr, SIZE)) return null;
+
+        long size = *(long*)(ptr + OFFSET_LENGTH);
+        if (size <= 0 || size > max_size) return null;
+
+        nint data = size < SSO_THRESHOLD ? ptr : *(nint*)ptr;
+        if (!memory.is_readable(data, (nuint)size)) return null;
+
+        byte[] bytes = new byte[size];
+        for (long i = 0; i < size; i++) bytes[i] = *(byte*)(data + i);
+
+        return Encoding.UTF8.GetString(bytes);
+    }
+
     public static void free(nint dest)
     {
         if (dest == 0) return;

@@ -11,9 +11,6 @@ public static unsafe class sky_cubemap
     private static nint faces;
     private static nint group;
     private static bool ready;
-    private static bool failed;
-    private static bool warned;
-    private static bool drew;
 
     public static string STATUS { get; private set; } = "not loaded";
 
@@ -41,12 +38,11 @@ public static unsafe class sky_cubemap
     public static bool load()
     {
         if (ready) return true;
-        if (failed) return false;
 
         nint texture_group = get_texture_group();
         if (texture_group == 0)
         {
-            STATUS = "waiting for texture group";
+            STATUS = "Waiting texture group";
             return false;
         }
 
