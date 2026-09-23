@@ -34,6 +34,8 @@ public static class OFFSETS
         public const nint G_TESSELLATOR = 0x1925550;
         public const nint G_SKYMATRIXSTACK = 0x192AED0;
         public const nint G_SKYCOLOUR = 0x192AE08;
+
+        //public const nint MINECRAFTGAME_GETSCREENNAME = 0x138A70;
     }
 
     public static class DATA

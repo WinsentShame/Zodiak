@@ -11,3 +11,4 @@ global using unsafe setup_fog_sig = delegate* unmanaged[Stdcall]<nint, nint, flo
 global using unsafe screen_renderer_singleton_sig = delegate* unmanaged[Stdcall]<nint>;
 global using unsafe screen_renderer_fill_sig = delegate* unmanaged[Stdcall]<nint, float, float, float, float, nint, void>;
 global using unsafe display_client_message_sig = delegate* unmanaged[Stdcall]<nint, nint, void>;
+//global using unsafe get_screen_name_sig = delegate* unmanaged[Stdcall]<nint, nint, nint>;
