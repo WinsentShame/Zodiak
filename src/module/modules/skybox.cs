@@ -2,9 +2,10 @@
 
 public sealed class skybox : module
 {
-    public skybox() : base(category.Visual, "Skybox", "Кубическая карта неба из ресурс пака.")
-    {
-    }
+    public override string DESCRIPTION => lang_manager.get("skybox.module.desc");
+
+    public skybox() : base(category.Visual, "Skybox", "")
+    { }
 
     public override void on_enable()
     {
@@ -13,9 +14,9 @@ public sealed class skybox : module
         level_renderer_camera_render_sky.set_time_of_day(true);
 
         if (sky_cubemap.load())
-            chat_response.success("Skybox включен.");
+            chat_response.send(lang_manager.get("skybox.module.enable"));
         else
-            chat_response.error($"Skybox: {sky_cubemap.STATUS}");
+            chat_response.send(lang_manager.get("skybox.module.error"));
     }
 
     public override void on_disable()
@@ -24,6 +25,6 @@ public sealed class skybox : module
         level_renderer_camera_render_sky.set_hide(false);
         level_renderer_camera_render_sky.set_time_of_day(false);
         sky_cubemap.unload();
-        chat_response.info("Skybox выключен.");
+        chat_response.send(lang_manager.get("skybox.module.disable"));
     }
 }

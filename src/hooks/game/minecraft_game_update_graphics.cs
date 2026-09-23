@@ -20,11 +20,14 @@ public sealed unsafe class minecraft_game_update_graphics : hook_group
     [UnmanagedCallersOnly(CallConvs = new[] { typeof(CallConvStdcall) })]
     private static void detour(nint self, nint a2)
     {
+        if (original == null) return;
+
         original(self, a2);
 
         if (self != 0 && context.MINECRAFT_GAME != self)
             context.MINECRAFT_GAME = self;
 
+       
         watermark.tick();
     }
 }

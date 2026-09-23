@@ -11,7 +11,7 @@ public static unsafe class chat_response
 
         nint base_address = native_interop.get_module_handle_w(null);
         if (base_address == 0)
-            return false; //logger.error("chat_response", "no base address");
+            return false; 
 
 
         display = (display_client_message_sig)
@@ -37,10 +37,4 @@ public static unsafe class chat_response
         try { display(gui_data, (nint)buffer); }
         finally { msvc_string.free((nint)buffer); }
     }
-
-    public static void info(string msg) => send($"§f[ §aZodiak§f | §bINFO §f] §7{msg} ");
-    public static void success(string msg) => send($"§f[ §aZodiak§f | §2SUCCESS §f] §7{msg} ");
-    public static void error(string msg) => send($"§f[ §aZodiak§f | §4ERROR §f] §7{msg} ");
-    public static void line(string msg) => send($"  §7{msg} ");
-    public static void def(string msg) => send(msg);
 }

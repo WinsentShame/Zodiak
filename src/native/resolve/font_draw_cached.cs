@@ -21,11 +21,6 @@ public static unsafe class font_draw_cached
 
         resolved = draw_cached != null;
 
-        //if (resolved)
-        //    logger.info("font_draw_cached", "resolved");
-        //else
-        //    logger.error("font_draw_cached", "resolve failed");
-
         return resolved;
     }
 

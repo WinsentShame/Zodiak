@@ -4,6 +4,8 @@ namespace Zodiak;
 
 public sealed class watermark : module
 {
+    public override string DESCRIPTION => lang_manager.get("watermark.module.desc");
+
     private static watermark? instance;
 
     private static readonly Stopwatch clock = Stopwatch.StartNew();
@@ -11,7 +13,7 @@ public sealed class watermark : module
     private static double last_time;
     private static float fps = 60f;
 
-    public watermark() : base(category.Visual, "Watermark", "Текст проекта / кадры / пинг")
+    public watermark() : base(category.Visual, "Watermark", "")
     {
         instance = this;
         ENABLED = true;

@@ -6,5 +6,5 @@ public enum category
     Player,
     Movement,
     Visual,
-    Misc,
+    Misc
 }

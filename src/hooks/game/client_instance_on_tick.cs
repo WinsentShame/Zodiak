@@ -24,5 +24,7 @@ public sealed unsafe class client_instance_on_tick : hook_group
             context.CLIENT_INSTANCE = self;
 
         original(self, a2, a3);
+
+        keybind_manager.tick();
     }
 }

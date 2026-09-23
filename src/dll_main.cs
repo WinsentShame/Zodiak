@@ -20,11 +20,14 @@ public static class program
         new level_renderer_camera_render_sky().install();
 
         chat_response.resolve();
-        font_draw_cached.resolve();    
+        font_draw_cached.resolve();
+        minecraft_game_get_screen.resolve();
 
         module_manager.register(new help());
         module_manager.register(new fog_color());
         module_manager.register(new skybox());
-        module_manager.register(new watermark());   
+        module_manager.register(new watermark());
+        module_manager.register(new binds());
+        module_manager.register(new lang());
     }
 }

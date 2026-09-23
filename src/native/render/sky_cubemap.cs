@@ -12,7 +12,7 @@ public static unsafe class sky_cubemap
     private static nint group;
     private static bool ready;
 
-    public static string STATUS { get; private set; } = "not loaded";
+    public static string STATUS { get; private set; } = lang_manager.get("skycubemap.render.default.status");
 
     private static readonly float[,] normals = new float[6, 3]
     {

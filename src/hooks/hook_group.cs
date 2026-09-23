@@ -6,8 +6,15 @@ public static class hook
     {
         original = 0;
 
-        if (native_interop.mh_create_hook(address, detour, out original) != 0)
-            return false;
+        int r = native_interop.mh_create_hook(address, detour, out original);
+
+        if (r == 3)
+        {
+            native_interop.mh_remove_hook(address);
+            r = native_interop.mh_create_hook(address, detour, out original);
+        }
+
+        if (r != 0) return false;
 
         if (native_interop.mh_enable_hook(address) != 0)
         {
@@ -38,19 +45,22 @@ public abstract unsafe class hook_group
 
         nint base_address = native_interop.get_module_handle_w(null);
         if (base_address == 0)
-            return false;  //logger.error(NAME, "no base address");
-
+            return false;
+        
 
         target = base_address + TARGET_OFFSET;
 
         if (!hook.install(target, detour_ptr(), out nint original_ptr))
-            return false; //logger.error(NAME, $"hook failed at {target:X}");
+            return false;
+        
 
+        if (original_ptr == 0)
+            return false;
+        
 
         store_original(original_ptr);
         INSTALLED = true;
 
-        //logger.info(NAME, $"installed at {target:X}");
         on_installed();
         return true;
     }
@@ -63,7 +73,6 @@ public abstract unsafe class hook_group
         native_interop.mh_remove_hook(target);
         INSTALLED = false;
 
-        //logger.info(NAME, "uninstalled");
         on_uninstalled();
     }
 

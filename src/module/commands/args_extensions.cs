@@ -38,4 +38,53 @@ public static class args_extensions
             && float.TryParse(args[1], out g)
             && float.TryParse(args[2], out b);
     }
+
+    public static bool try_language(this string[] args, int index, out language value)
+    {
+        value = lang_manager.CURRENT;
+
+        if (index >= args.Length) return false;
+
+        string a = args[index];
+
+        if (a.Equals("en", StringComparison.OrdinalIgnoreCase)
+            || a.Equals("english", StringComparison.OrdinalIgnoreCase))
+        {
+            value = language.English;
+            return true;
+        }
+
+        if (a.Equals("ru", StringComparison.OrdinalIgnoreCase)
+            || a.Equals("russian", StringComparison.OrdinalIgnoreCase))
+        {
+            value = language.Russian;
+            return true;
+        }
+
+        return false;
+    }
+
+    public static bool try_keybind(this string[] args, int index,
+                               out int vk, out bool ctrl, out bool shift, out bool alt)
+    {
+        vk = 0;
+        ctrl = shift = alt = false;
+
+        if (index >= args.Length) return false;
+
+        string[] parts = args[index].Split('+', StringSplitOptions.RemoveEmptyEntries);
+        for (int i = 0; i < parts.Length; i++)
+        {
+            string p = parts[i].Trim();
+
+            if (p.Equals("ctrl", StringComparison.OrdinalIgnoreCase)) { ctrl = true; continue; }
+            if (p.Equals("shift", StringComparison.OrdinalIgnoreCase)) { shift = true; continue; }
+            if (p.Equals("alt", StringComparison.OrdinalIgnoreCase)) { alt = true; continue; }
+
+            vk = key_names.from_string(p);
+            if (vk == 0) return false;
+        }
+
+        return vk != 0;
+    }
 }
