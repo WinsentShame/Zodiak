@@ -8,13 +8,25 @@ public static class hook
 
         int r = native_interop.mh_create_hook(address, detour, out original);
 
-        if (r == 3)
+        if (r == 3) 
         {
+            native_interop.mh_disable_hook(address);
             native_interop.mh_remove_hook(address);
+
             r = native_interop.mh_create_hook(address, detour, out original);
         }
 
-        if (r != 0) return false;
+        if (r != 0)
+        {
+            original = 0;
+            return false;
+        }
+
+        if (original == 0)
+        {
+            native_interop.mh_remove_hook(address);
+            return false;
+        }
 
         if (native_interop.mh_enable_hook(address) != 0)
         {
@@ -39,7 +51,7 @@ public abstract unsafe class hook_group
     protected virtual void on_installed() { }
     protected virtual void on_uninstalled() { }
 
-    public bool install()
+    public virtual bool install()
     {
         if (INSTALLED) return true;
 

@@ -18,6 +18,7 @@ public static class program
         new minecraft_screen_model_send_chat_message().install();
         new level_renderer_camera_setup_fog().install();
         new level_renderer_camera_render_sky().install();
+        new level_renderer_camera_render_entities().install();
 
         chat_response.resolve();
         font_draw_cached.resolve();
@@ -27,6 +28,7 @@ public static class program
         module_manager.register(new fog_color());
         module_manager.register(new skybox());
         module_manager.register(new watermark());
+        module_manager.register(new wallhack());
         module_manager.register(new binds());
         module_manager.register(new lang());
     }

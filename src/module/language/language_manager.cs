@@ -50,6 +50,11 @@ public static class lang_manager
         ["fogcolor.module.color"] = (project_name + "Цвет тумана ({0:F2}, {1:F2}, {2:F2})", project_name + "Fog color ({0:F2}, {1:F2}, {2:F2})"),
         ["fogcolor.module.disable"] = (project_name + "Fog color выключен.", project_name + project_name + "Fog color disabled."),
 
+        ["wallhack.module.desc"] = ("Игроки видны сквозь стены.", "Players are visible through walls."),
+        ["wallhack.usage"] = (".wallhack", ".wallhack"),
+        ["wallhack.module.enable"] = (project_name + " Wallhack включен.", project_name + " Wallhack enabled."),
+        ["wallhack.module.disable"] = (project_name + " Wallhack выключен.", project_name + " Wallhack disabled."),
+
         ["watermark.module.desc"] = ("Дополнительная информация.", "Additional information."),
         ["watermark.module.usage"] = (".watermark", ".watermark"),
     };

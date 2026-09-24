@@ -4,19 +4,26 @@ public static class OFFSETS
 {
     public static class FUNC
     {
+        public const nint LOCALPLAYER_NORMALTICK = 0x4AA600;
+        public const nint REMOTEPLAYER_NORMALTICK = 0x4B3D10;
+
         public const nint CLIENTINSTANCE_ONTICK = 0x11B2D0;
         public const nint CLIENTINSTANCE_LEAVEGAME = 0x119C80;
+
         public const nint MINECRAFTGAME_UPDATEGRAPHICS = 0x131D00;
         public const nint MINECRAFTSCREENMODEL_SENDCHATMESSAGE = 0x399C70;
+
         public const nint GUIDATA_DISPLAYCLIENTMESSAGE = 0x1CDD30;
 
         public const nint LEVELRENDERERCAMERA_SETUPFOG = 0x5AFE00;
         public const nint LEVELRENDERERCAMERA_RENDERSKY = 0x5ACE40;
         public const nint LEVELRENDERERCAMERA_RENDERSUNORMOON = 0x5AD330;
         public const nint LEVELRENDERERCAMERA_RENDERSTARS = 0x5AD1D0;
+        public const nint LEVELRENDERERCAMERA_RENDERENTITIES = 0x5AE250;
 
         public const nint TEXTUREPTR_CTOR = 0x73F2B0;
         public const nint TEXTUREGROUP_REMOVEREF = 0x44C160;
+
         public const nint RAKNETNETWORKPEER_UPDATE = 0x7917B0;
 
         public const nint SCREENRENDERER_SINGLETON = 0x1D9620;
@@ -36,6 +43,11 @@ public static class OFFSETS
         public const nint G_SKYCOLOUR = 0x192AE08;
 
         public const nint MINECRAFTGAME_GETSCREENNAME = 0x138A70;
+
+        public const nint MCE_RENDERCONTEXT_CREATEDEPTHSTATE = 0x726EF0;
+        public const nint MCE_RENDERCONTEXT_APPLYDEPTHSTATE = 0x7271B0;
+
+        public const nint ENTITYRENDERDISPATCHER_RENDER = 0x55D640;
     }
 
     public static class DATA
