@@ -2,10 +2,12 @@
 
 public sealed class fog_color : module
 {
+    public override string USAGE => lang_manager.get("fogcolor.module.usage");
     public override string DESCRIPTION => lang_manager.get("fogcolor.module.desc");
 
-    public fog_color() : base(category.Visual, "FogColor", "")
-    { }
+    public fog_color() : base(category.Visual, "FogColor", "", "", true)
+    {
+    }
 
     public override void on_enable()
     {
@@ -37,6 +39,7 @@ public sealed class fog_color : module
             level_renderer_camera_setup_fog.B = Math.Clamp(b, 0f, 1f);
             level_renderer_camera_setup_fog.ACTIVE = true;
             ENABLED = true;
+
             chat_response.send(lang_manager.get("fogcolor.module.color",
                 level_renderer_camera_setup_fog.R,
                 level_renderer_camera_setup_fog.G,

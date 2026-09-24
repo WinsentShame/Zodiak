@@ -9,25 +9,28 @@ public static class lang_manager
     private static readonly Dictionary<string, (string ru, string en)> table = new()
     {
         ["lang.module.desc"] = ("Языковые изменения.", "Language changes."),
-        ["lang.changed"] = (project_name + "Язык изменен с {0} на {1}.", project_name + "Language changed from {0} to {1}."),
-        ["lang.already"] = (project_name + "Текущий язык уже {0}.", project_name + "Language is already {0}."),
-        ["lang.usage"] = (project_name + "Используй: .lang [ru|en]", project_name + "Usage: .lang [ru|en]"),
+        ["lang.module.usage"] = (".lang / .lang ru / .lang en", ".lang / .lang ru / .lang en"),
+        ["lang.module.changed"] = (project_name + "Язык изменен с {0} на {1}.", project_name + "Language changed from {0} to {1}."),
+        ["lang.module.already"] = (project_name + "Текущий язык уже {0}.", project_name + "Language is already {0}."),
 
         ["chat.error"] = (project_name + "Прости, я не знаю эту команду.", project_name + "Sorry, I don't know that command."),
 
         ["binds.module.desc"] = ("Управление биндами клавиш.", "Keybind management."),
-        ["binds.module.usage"] = ("Используй: .binds <module> <key>", "Usage: .binds <module> <key>"),
-        ["binds.module.notfound"] = ("Модуль не найден: {0}", "Module not found: {0}"),
-        ["binds.module.cleared"] = ("{0}: бинд очищен", "{0}: bind cleared"),
-        ["binds.module.set"] = ("{0} → {1}", "{0} → {1}"),
-        ["binds.module.line"] = ("§7{0} §f→ §b{1}", "§7{0} §f→ §b{1}"),
-        ["binds.module.header"] = ("Текущие бинды:", "Current keybindings:"),
+        ["binds.module.usage"] = (".binds / .binds <module> <key>", ".binds / .binds <module> <key>"),
         ["binds.module.empty"] = (" Бинды отсутствуют.", " No keybindings set."),
-        ["binds.module.allcleared"] = ("Все бинды очищены", "All binds cleared"),
-        ["binds.module.key.error"] = ("Клавиша не найдена: {0}", "Key not found: {0}"),
-        ["binds.module.key.unknown"] = ("Клавиша не найдена", "Key not found"),
+        ["binds.module.notfound"] = (project_name + "Модуль не найден: {0}", "Module not found: {0}"),
+        ["binds.module.cleared"] = (project_name + "{0}: бинд очищен", "{0}: bind cleared"),
+        ["binds.module.set"] = (project_name + "{0} → {1}", "{0} → {1}"),
+        ["binds.module.line"] = (project_name + "§7{0} §f→ §b{1}", "§7{0} §f→ §b{1}"),
+        ["binds.module.header"] = (project_name + "Текущие бинды:", project_name + "Current keybindings:"),
+        ["binds.module.allcleared"] = (project_name + "Все бинды очищены.", project_name + "All binds cleared."),
+        ["binds.module.key.error"] = (project_name + "Клавиша не найдена: {0}", project_name + "Key not found: {0}"),
+        ["binds.module.key.unknown"] = (project_name + "Клавиша не найдена.", project_name + "Key not found."),
+        ["binds.module.notbindable"] = (project_name + "Невозможно забиндить '{0}' модуль.", project_name + "{0} cannot be bound"),
 
         ["help.module.desc"] = ("Список доступных команд.", "List of available commands."),
+        ["help.module.usage"] = (".help", ".help"),
+        ["help.module.usage.label"] = ("Использование:", "Usage:"),
         ["help.module.zodiak.commands"] = ("§l§fZodiak§r - действующие команды:", "§l§fZodiak§r - active commands:"),
 
         ["skycubemap.render.default.status"] = ("Не загружено.", "Not loaded."),
@@ -36,21 +39,19 @@ public static class lang_manager
         ["skycubemap.render.default.notloaded"] = ("", ""),
 
         ["skybox.module.desc"] = ("Кубическая карта неба из ресурс пака.", "A skybox from the resource pack."),
+        ["skybox.module.usage"] = (".skybox", ".skybox"),
         ["skybox.module.enable"] = (project_name + "Skybox включен.", project_name + "Skybox enabled."),
         ["skybox.module.disable"] = (project_name + "Skybox выключен.", project_name + "Skybox disabled."),
         ["skybox.module.error"] = (project_name + "Skybox: ", project_name + "Skybox: "),
 
         ["fogcolor.module.desc"] = ("Пользовательский цвет тумана.", "Custom fog color."),
-        ["fogcolor.module.enable"] = ("Fog color включен ({0:F2}, {1:F2}, {2:F2}).",
-                                        "Fog color enabled ({0:F2}, {1:F2}, {2:F2})."),
-        ["fogcolor.module.color"] = ("Цвет тумана ({0:F2}, {1:F2}, {2:F2})",
-                                        "Fog color ({0:F2}, {1:F2}, {2:F2})"),
-        ["fogcolor.module.disable"] = (project_name + "Fog color выключен.",
-                                        project_name + "Fog color disabled."),
-        ["fogcolor.module.usage"] = (project_name + "Используй: .fogcolor <r> <g> <b>",
-                                        project_name + "Usage: .fogcolor <r> <g> <b>"),
+        ["fogcolor.module.usage"] = (".fogcolor / .fogcolor <r> <g> <b>", ".fogcolor / .fogcolor <r> <g> <b>"),
+        ["fogcolor.module.enable"] = (project_name + "Fog color включен ({0:F2}, {1:F2}, {2:F2}).", project_name + "Fog color enabled ({0:F2}, {1:F2}, {2:F2})."),
+        ["fogcolor.module.color"] = (project_name + "Цвет тумана ({0:F2}, {1:F2}, {2:F2})", project_name + "Fog color ({0:F2}, {1:F2}, {2:F2})"),
+        ["fogcolor.module.disable"] = (project_name + "Fog color выключен.", project_name + project_name + "Fog color disabled."),
 
         ["watermark.module.desc"] = ("Дополнительная информация.", "Additional information."),
+        ["watermark.module.usage"] = (".watermark", ".watermark"),
     };
 
     public static string get(string key, params object[] args)

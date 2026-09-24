@@ -3,11 +3,17 @@ namespace Zodiak;
 public abstract class module
 {
     public string NAME { get; }
-    public virtual string DESCRIPTION => raw_description ?? "";
-    public keybind BIND { get; set; } = new();
     public category CATEGORY { get; }
+    public bool BINDABLE { get; }
 
-    private readonly string? raw_description;
+    private readonly string _description;
+    public virtual string DESCRIPTION => _description;
+
+    private readonly string _usage;
+    public virtual string USAGE => _usage;
+
+    public keybind BIND { get; set; } = new();
+
     private bool _enabled;
     public bool ENABLED
     {
@@ -22,11 +28,13 @@ public abstract class module
         }
     }
 
-    protected module(category category, string name, string description)
+    protected module(category category, string name, string usage, string description, bool bindable)
     {
         CATEGORY = category;
         NAME = name;
-        raw_description = description;
+        _usage = usage;
+        _description = description;
+        BINDABLE = bindable;
     }
 
     public virtual void on_enable() { }

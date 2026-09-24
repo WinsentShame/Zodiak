@@ -4,6 +4,7 @@ namespace Zodiak;
 
 public sealed class watermark : module
 {
+    public override string USAGE => lang_manager.get("watermark.module.usage");
     public override string DESCRIPTION => lang_manager.get("watermark.module.desc");
 
     private static watermark? instance;
@@ -13,7 +14,7 @@ public sealed class watermark : module
     private static double last_time;
     private static float fps = 60f;
 
-    public watermark() : base(category.Visual, "Watermark", "")
+    public watermark() : base(category.Visual, "Watermark", "", "", true)
     {
         instance = this;
         ENABLED = true;

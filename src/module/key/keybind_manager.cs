@@ -12,8 +12,11 @@ public static class keybind_manager
         for (int i = 0; i < modules.Count; i++)
         {
             var m = modules[i];
+
+            if (!m.BINDABLE) continue;
             if (m.BIND.IS_EMPTY) continue;
             if (!m.BIND.matches()) continue;
+
             m.ENABLED = !m.ENABLED;
         }
     }

@@ -2,10 +2,12 @@
 
 public sealed class skybox : module
 {
+    public override string USAGE => lang_manager.get("skybox.usage");
     public override string DESCRIPTION => lang_manager.get("skybox.module.desc");
 
-    public skybox() : base(category.Visual, "Skybox", "")
-    { }
+    public skybox() : base(category.Visual, "Skybox", "", "", true)
+    {
+    }
 
     public override void on_enable()
     {

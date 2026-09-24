@@ -2,10 +2,12 @@
 
 public sealed class binds : module
 {
+    public override string USAGE => lang_manager.get("binds.module.usage");
     public override string DESCRIPTION => lang_manager.get("binds.module.desc");
 
-    public binds() : base(category.Misc, "Binds", "")
-    { }
+    public binds() : base(category.Misc, "Binds", "", "", false)
+    {
+    }
 
     public override void on_command(string[] args)
     {
@@ -24,6 +26,12 @@ public sealed class binds : module
         if (target == null)
         {
             chat_response.send(lang_manager.get("binds.module.notfound", args[0]));
+            return;
+        }
+
+        if (!target.BINDABLE)
+        {
+            chat_response.send(lang_manager.get("binds.module.notbindable", target.NAME));
             return;
         }
 
@@ -60,12 +68,14 @@ public sealed class binds : module
         {
             var m = modules[i];
             if (m.BIND.IS_EMPTY) continue;
-            any = true;
 
+            any = true;
             chat_response.send(lang_manager.get("binds.module.line",
                 m.NAME.ToLower(), m.BIND.ToString()));
         }
-        if (!any) chat_response.send(lang_manager.get("binds.module.empty"));
+
+        if (!any)
+            chat_response.send(lang_manager.get("binds.module.empty"));
     }
 
     private static void clear_all()

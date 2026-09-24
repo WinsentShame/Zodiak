@@ -2,10 +2,12 @@
 
 public sealed class lang : module
 {
+    public override string USAGE => lang_manager.get("lang.module.usage");
     public override string DESCRIPTION => lang_manager.get("lang.module.desc");
 
-    public lang() : base(category.Misc, "Lang", "")
-    { }
+    public lang() : base(category.Misc, "Lang", "", "", false)
+    {
+    }
 
     public override void on_command(string[] args)
     {
@@ -28,13 +30,13 @@ public sealed class lang : module
 
         if (previous == lang_manager.CURRENT)
         {
-            chat_response.send(lang_manager.get("lang.already",
+            chat_response.send(lang_manager.get("lang.module.already",
                 lang_manager.native_name(lang_manager.CURRENT)));
             return;
         }
 
         string from = lang_manager.native_name(previous);
         string to = lang_manager.native_name(lang_manager.CURRENT);
-        chat_response.send(lang_manager.get("lang.changed", from, to));
+        chat_response.send(lang_manager.get("lang.module.changed", from, to));
     }
 }
