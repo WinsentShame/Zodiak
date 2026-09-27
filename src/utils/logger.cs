@@ -12,7 +12,7 @@ public static class logger
         {
             if (log_file != null) return;
             string local_appdata = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
-            string dir = Path.Combine(local_appdata, "AerialClient");
+            string dir = Path.Combine(local_appdata, "Zodiak");
             Directory.CreateDirectory(dir);
             log_path = Path.Combine(dir, "latest.log");
             log_file = new StreamWriter(log_path, true, Encoding.UTF8) { AutoFlush = true };

@@ -21,7 +21,7 @@ public sealed unsafe class local_player_normal_tick : hook_group
     private static void detour(nint self)
     {
         if (self != 0)
-            entity_type.register_player_vtable(*(nint*)self);
+            entity_type.capture_local(self);
 
         original(self);
     }

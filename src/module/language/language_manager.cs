@@ -55,6 +55,11 @@ public static class lang_manager
         ["wallhack.module.enable"] = (project_name + " Wallhack включен.", project_name + " Wallhack enabled."),
         ["wallhack.module.disable"] = (project_name + " Wallhack выключен.", project_name + " Wallhack disabled."),
 
+        ["hitboxes.usage"] = (".hitboxes", ".hitboxes"),
+        ["hitboxes.module.desc"] = ("Хитбоксы игроков.", "Player hitboxes."),
+        ["hitboxes.module.enable"] = (project_name + " Hitboxes включены.", project_name + " Hitboxes enabled."),
+        ["hitboxes.module.disable"] = (project_name + " Hitboxes выключены.", project_name + " Hitboxes disabled."),
+
         ["watermark.module.desc"] = ("Дополнительная информация.", "Additional information."),
         ["watermark.module.usage"] = (".watermark", ".watermark"),
     };
