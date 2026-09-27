@@ -15,5 +15,5 @@ global using unsafe get_screen_name_sig = delegate* unmanaged[Stdcall]<nint, nin
 global using unsafe render_entities_sig = delegate* unmanaged[Stdcall]<nint, float, nint>;
 global using unsafe create_depth_state_sig = delegate* unmanaged[Stdcall]<nint, nint, nint, nint>;
 global using unsafe apply_depth_state_sig = delegate* unmanaged[Stdcall]<nint, nint, nint, nint>;
-global using unsafe entity_render_disp_sig = delegate* unmanaged[Stdcall]<nint, nint, nint, nint, int, nint>;
+global using unsafe render_level_sig = delegate* unmanaged[Stdcall]<nint, nint, nint, nint, void>;
 global using unsafe entity_tick_sig = delegate* unmanaged[Stdcall]<nint, void>;

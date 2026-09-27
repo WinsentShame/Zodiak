@@ -47,7 +47,7 @@ public static class OFFSETS
         public const nint MCE_RENDERCONTEXT_CREATEDEPTHSTATE = 0x726EF0;
         public const nint MCE_RENDERCONTEXT_APPLYDEPTHSTATE = 0x7271B0;
 
-        public const nint ENTITYRENDERDISPATCHER_RENDER = 0x55D640;
+        public const nint LEVELRENDERERCAMERA_RENDERLEVEL = 0x5B07D0;
     }
 
     public static class DATA

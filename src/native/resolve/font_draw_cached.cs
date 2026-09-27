@@ -10,17 +10,11 @@ public static unsafe class font_draw_cached
         if (resolved) return true;
 
         nint base_address = native_interop.get_module_handle_w(null);
-        if (base_address == 0)
-        {
-            logger.error("font_draw_cached", "no base address");
-            return false;
-        }
+        if (base_address == 0) { return false; }
 
-        draw_cached = (font_draw_cached_sig)
-            (base_address + OFFSETS.FUNC.FONT_DRAWCACHED);
+        draw_cached = (font_draw_cached_sig)(base_address + OFFSETS.FUNC.FONT_DRAWCACHED);
 
         resolved = draw_cached != null;
-
         return resolved;
     }
 
@@ -42,14 +36,7 @@ public static unsafe class font_draw_cached
         colour[2] = b;
         colour[3] = a;
 
-        try
-        {
-            draw_cached(font, (nint)str_buf, x, y, (nint)colour,
-                        0, 0, 0, -1, 0);
-        }
-        finally
-        {
-            msvc_string.free((nint)str_buf);
-        }
+        try{ draw_cached(font, (nint)str_buf, x, y, (nint)colour, 0, 0, 0, -1, 0);  } 
+        finally { msvc_string.free((nint)str_buf); }
     }
 }

@@ -10,10 +10,14 @@ public sealed unsafe class level_renderer_camera_render_entities : hook_group
     private static bool in_entity_pass;
     private static bool creating_no_depth;
     private static bool no_depth_ready;
+    private static bool second_pass;
 
     private static nint no_depth_state;
     private static nint cached_ctx;
 
+    private static float saved_partial = 1.0f;
+
+    private static render_level_sig original_render_level;
     private static render_entities_sig original_render_entities;
     private static create_depth_state_sig original_create_depth;
     private static apply_depth_state_sig original_apply_depth;
@@ -40,6 +44,16 @@ public sealed unsafe class level_renderer_camera_render_entities : hook_group
         }
 
         {
+            nint addr = base_address + OFFSETS.FUNC.LEVELRENDERERCAMERA_RENDERLEVEL;
+            render_level_sig fn = &render_level_detour;
+            if (!hook.install(addr, (nint)fn, out nint orig) || orig == 0)
+            {
+                uninstall();
+                return false;
+            }
+            original_render_level = (render_level_sig)orig;
+        }
+        {
             nint addr = base_address + OFFSETS.FUNC.MCE_RENDERCONTEXT_CREATEDEPTHSTATE;
             create_depth_state_sig fn = &create_depth_detour;
             if (!hook.install(addr, (nint)fn, out nint orig) || orig == 0)
@@ -62,11 +76,32 @@ public sealed unsafe class level_renderer_camera_render_entities : hook_group
 
         return true;
     }
+    [UnmanagedCallersOnly(CallConvs = new[] { typeof(CallConvStdcall) })]
+    private static void render_level_detour(nint self, nint a2, nint a3, nint a4)
+    {
+        if (original_render_level == null) return;
 
+        original_render_level(self, a2, a3, a4);
+
+        if (ACTIVE && original_render_entities != null)
+        {
+            second_pass = true;
+            in_entity_pass = true;
+            try
+            { original_render_entities(self, saved_partial); }
+            finally
+            {
+                in_entity_pass = false;
+                second_pass = false;
+            }
+        }
+    }
     [UnmanagedCallersOnly(CallConvs = new[] { typeof(CallConvStdcall) })]
     private static nint render_entities_detour(nint self, float partial)
     {
         if (original_render_entities == null) return 0;
+
+        saved_partial = partial;  
 
         bool prev = in_entity_pass;
         if (ACTIVE) in_entity_pass = true;
@@ -156,9 +191,6 @@ public sealed unsafe class level_renderer_camera_render_entities : hook_group
             for (int i = 0; i < 24; i++) *(byte*)(cached_ctx + 8 + i) = saved_cache[i];
             *(byte*)(cached_ctx + 117) = saved_flag;
         }
-        finally
-        {
-            creating_no_depth = false;
-        }
+        finally { creating_no_depth = false; }
     }
 }
