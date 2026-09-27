@@ -19,6 +19,13 @@ public static class program
         new level_renderer_camera_setup_fog().install();
         new level_renderer_camera_render_sky().install();
         new level_renderer_camera_render_entities().install();
+        new entity_turn().install();
+        new level_renderer_player_move_camera_to_player().install();
+        new options_set_player_view_perspective().install();
+        new level_renderer_camera_render_entities().install();
+        new level_renderer_camera_render_level().install();
+        new mce_rendercontext_create_depth_state().install();
+        new mce_rendercontext_apply_depth_state().install();
 
         chat_response.resolve();
         font_draw_cached.resolve();
@@ -29,6 +36,7 @@ public static class program
         module_manager.register(new skybox());
         module_manager.register(new watermark());
         module_manager.register(new wallhack());
+        module_manager.register(new freelook());
         module_manager.register(new binds());
         module_manager.register(new lang());
     }

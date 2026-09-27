@@ -11,13 +11,13 @@ public sealed class wallhack : module
 
     public override void on_enable()
     {
-        level_renderer_camera_render_entities.ACTIVE = true;
+        wallhack_state.ACTIVE = true;
         chat_response.send(lang_manager.get("wallhack.module.enable"));
     }
 
     public override void on_disable()
     {
-        level_renderer_camera_render_entities.ACTIVE = false;
+        wallhack_state.ACTIVE = false;
         chat_response.send(lang_manager.get("wallhack.module.disable"));
     }
 }

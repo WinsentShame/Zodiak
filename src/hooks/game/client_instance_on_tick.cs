@@ -25,6 +25,7 @@ public sealed unsafe class client_instance_on_tick : hook_group
 
         original(self, a2, a3);
 
+        freelook.tick();
         keybind_manager.tick();
     }
 }

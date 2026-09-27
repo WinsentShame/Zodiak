@@ -48,6 +48,13 @@ public static class OFFSETS
         public const nint MCE_RENDERCONTEXT_APPLYDEPTHSTATE = 0x7271B0;
 
         public const nint LEVELRENDERERCAMERA_RENDERLEVEL = 0x5B07D0;
+
+        public const nint ENTITY_TURN = 0x9C2020;
+        public const nint LEVELRENDERERPLAYER_MOVECAMERATOPLAYER = 0x5BA7E0;
+
+        public const nint OPTIONS_GETPLAYERVIEWPERSPECTIVE = 0x488420;
+        public const nint OPTIONS_SETPLAYERVIEWPERSPECTIVE = 0x4883A0;
+        public const nint MINECRAFTGAME_GETOPTIONS = 0x137BD0;
     }
 
     public static class DATA
@@ -65,7 +72,14 @@ public static class OFFSETS
 
         public const nint CLIENTINSTANCE_TEXTURECONTAINER = 0x30;
         public const nint CLIENTINSTANCE_TEXTUREGROUP = 0x80;
+        public const nint CLIENTINSTANCE_CAMERATARGET = 0x50;
+        public const nint CLIENTINSTANCE_LOCALPLAYER = 0x60;
 
         public const nint RAKNETNETWORKPEER_LAST_PING = 232;
+
+        public const nint ENTITY_ROT_YAW = 0xB8;
+        public const nint ENTITY_ROT_PITCH = 0xBC;
+        public const nint ENTITY_ROT_OLD_YAW = 0xC0;
+        public const nint ENTITY_ROT_OLD_PITCH = 0xC4;
     }
 }

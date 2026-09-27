@@ -5,7 +5,6 @@ namespace Zodiak;
 
 public sealed unsafe class level_renderer_camera_render_sky : hook_group
 {
-
     public static bool ACTIVE;
 
     private static render_sky_sig original;
@@ -31,10 +30,8 @@ public sealed unsafe class level_renderer_camera_render_sky : hook_group
     {
         base_address = native_interop.get_module_handle_w(null);
 
-        sun_moon = (render_sun_moon_sig)
-            (base_address + OFFSETS.FUNC.LEVELRENDERERCAMERA_RENDERSUNORMOON);
-        stars = (render_stars_sig)
-            (base_address + OFFSETS.FUNC.LEVELRENDERERCAMERA_RENDERSTARS);
+        sun_moon = (render_sun_moon_sig)(base_address + OFFSETS.FUNC.LEVELRENDERERCAMERA_RENDERSUNORMOON);
+        stars = (render_stars_sig)(base_address + OFFSETS.FUNC.LEVELRENDERERCAMERA_RENDERSTARS);
 
         hide_sky = new byte_patch(signatures.HIDE_SKY, 6);
     }
@@ -51,13 +48,13 @@ public sealed unsafe class level_renderer_camera_render_sky : hook_group
 
         set_hide(true);
 
-        var fog = fog_slot(self + OFFSETS.FIELD.LEVELRENDERERCAMERA_FOGCOLOUR);
-        var fog_saved = fog.read();
-        fog.write(0f, 0f, 0f, 0f);
+        var cam_fog = fog.camera(self);
+        var fog_saved = cam_fog.read();
+        cam_fog.write(0f, 0f, 0f, 0f);
 
         original(self, a, b);
 
-        fog.write(fog_saved);
+        cam_fog.write(fog_saved);
 
         sun_moon(self, b, 1);
         sun_moon(self, b, 0);
@@ -67,6 +64,7 @@ public sealed unsafe class level_renderer_camera_render_sky : hook_group
     }
 
     #region Skybox module API
+
     public static void set_hide(bool hide)
     {
         if (hide_sky == null || base_address == 0) return;
@@ -93,57 +91,21 @@ public sealed unsafe class level_renderer_camera_render_sky : hook_group
         }
     }
 
+    #endregion
+
     private static void draw_cubemap_bright(nint self)
     {
-        var fog = fog_slot(self + OFFSETS.FIELD.LEVELRENDERERCAMERA_FOGCOLOUR);
-        var fog_saved = fog.read();
-        fog.write(1f, 1f, 1f, 1f);
+        var cam_fog = fog.camera(self);
+        var cam_saved = cam_fog.read();
+        cam_fog.write(1f, 1f, 1f, 1f);
 
-        nint sky_ptr = base_address + OFFSETS.FUNC.G_SKYCOLOUR;
-        var sky = fog_slot(sky_ptr);
+        var sky = fog.sky_colour(base_address);
         var sky_saved = sky.read();
         sky.write(1f, 1f, 1f, 1f);
 
         sky_cubemap.draw(self);
 
         sky.write(sky_saved);
-        fog.write(fog_saved);
+        cam_fog.write(cam_saved);
     }
-
-    private static fog_ref fog_slot(nint addr)
-    {
-        if (!memory.is_readable(addr, 16)) return new fog_ref(null);
-        return new fog_ref((float*)addr);
-    }
-
-    private readonly unsafe struct fog_ref
-    {
-        private readonly float* ptr;
-
-        public fog_ref(float* p) { ptr = p; }
-
-        public bool valid => ptr != null;
-
-        public (float r, float g, float b, float a) read()
-            => valid ? (ptr[0], ptr[1], ptr[2], ptr[3]) : (0f, 0f, 0f, 0f);
-
-        public void write((float r, float g, float b, float a) c)
-        {
-            if (!valid) return;
-            ptr[0] = c.r;
-            ptr[1] = c.g;
-            ptr[2] = c.b;
-            ptr[3] = c.a;
-        }
-
-        public void write(float r, float g, float b, float a)
-        {
-            if (!valid) return;
-            ptr[0] = r;
-            ptr[1] = g;
-            ptr[2] = b;
-            ptr[3] = a;
-        }
-    }
-    #endregion
 }
