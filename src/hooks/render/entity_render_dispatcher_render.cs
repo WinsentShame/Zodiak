@@ -24,11 +24,17 @@ public sealed unsafe class entity_render_dispatcher_render : hook_group
 
         nint result = original(self, entity, pos, a4, a5);
 
-        if (esp.ACTIVE && entity != 0 && entity_check.is_real_player(entity))
+        if (entity != 0 && entity_check.is_real_player(entity))
         {
             nint player = local_player.get();
             if (entity != player)
-                entity_cache.push(entity);
+            {
+                if (esp.ACTIVE)
+                    entity_cache.push(entity);
+
+                if (hitbox.ACTIVE)
+                    hitbox_state.apply(entity, hitbox.WIDTH_MULT, hitbox.HEIGHT_MULT);
+            }
         }
 
         return result;

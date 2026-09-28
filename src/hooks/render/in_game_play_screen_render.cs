@@ -25,6 +25,6 @@ public sealed unsafe class in_game_play_screen_render : hook_group
         original(self, screen_context);
 
         if (esp.ACTIVE)
-            hitbox_renderer.draw(wallhack_state.SAVED_PARTIAL);
+            esp_renderer.draw(wallhack_state.SAVED_PARTIAL);
     }
 }

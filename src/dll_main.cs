@@ -42,6 +42,7 @@ public static class program
         module_manager.register(new wallhack());
         module_manager.register(new freelook());
         module_manager.register(new esp());
+        module_manager.register(new hitbox());
         module_manager.register(new binds());
         module_manager.register(new lang());
     }

@@ -92,6 +92,9 @@ public static class OFFSETS
         public const nint ENTITY_ROT_PITCH = 0xBC;
         public const nint ENTITY_ROT_YAW = 0xB8;
 
+        public const nint ENTITY_HITBOX_WIDTH = 0x198;
+        public const nint ENTITY_HITBOX_HEIGHT = 0x19C;
+
         public const nint LEVEL_RENDERER_CAMERA_FOG_COLOUR = 0x3C8;
         public const nint LEVEL_RENDERER_CAMERA_SUN_MATERIAL = 0x308;
 

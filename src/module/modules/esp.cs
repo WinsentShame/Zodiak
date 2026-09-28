@@ -7,7 +7,7 @@ public sealed class esp : module
 
     public static bool ACTIVE;
 
-    public esp() : base(category.Visual, "esp", "", "", true)
+    public esp() : base(category.Visual, "Esp", "", "", true)
     {
     }
 

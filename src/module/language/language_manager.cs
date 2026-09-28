@@ -65,6 +65,12 @@ public static class lang_manager
         ["freelook.module.enable"] = (project_name + " Freelook включен.", project_name + "Freelook enabled."),
         ["freelook.module.disable"] = (project_name + "Freelook выключен.", project_name + "Freelook disabled."),
 
+        ["hitbox.usage"] = (".hitbox / .hitbox size <множитель>", ".hitbox / .hitbox size <multiplier>"),
+        ["hitbox.module.desc"] = ("Увеличение хитбоксов игроков.", "Enlarged player hitboxes."),
+        ["hitbox.module.enable"] = (project_name + "Hitbox включен ({0:F2} x {1:F2}).", project_name + "Hitbox enabled ({0:F2} x {1:F2})."),
+        ["hitbox.module.disable"] = (project_name + "Hitbox выключен.", project_name + "Hitbox disabled."),
+        ["hitbox.module.size.set"] = (project_name + "Hitbox → x{0:F2}", project_name + "Hitbox → x{0:F2}"),
+
         ["watermark.module.desc"] = ("Дополнительная информация.", "Additional information."),
         ["watermark.module.usage"] = (".watermark", ".watermark"),
     };

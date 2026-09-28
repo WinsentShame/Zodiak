@@ -1,9 +1,9 @@
 ﻿namespace Zodiak;
 
-public static unsafe class hitbox_renderer
+public static unsafe class esp_renderer
 {
-    private const float half_w = 0.3f;
-    private const float height = 1.8f;
+    private const float EYE_OFFSET = 1.62f;
+    private const float PADDING = 0.06f;
     private const int edge_count = 12;
 
     private static readonly int[] edges_a = { 0, 1, 2, 3, 4, 5, 6, 7, 0, 1, 2, 3 };
@@ -11,10 +11,13 @@ public static unsafe class hitbox_renderer
 
     public static void draw(float partial)
     {
-        nint base_address = native_interop.get_module_handle_w(null);
+        nint ba = native_interop.get_module_handle_w(null);
         nint player = local_player.get();
 
-        if (base_address == 0 || !tessellator.resolve() || !tessellator.valid() || !local_player.is_valid(player))
+        if (ba == 0
+            || !tessellator.resolve()
+            || !tessellator.valid()
+            || !local_player.is_valid(player))
         {
             entity_cache.clear();
             return;
@@ -23,13 +26,13 @@ public static unsafe class hitbox_renderer
         if (partial < 0f) partial = 0f;
         if (partial > 1f) partial = 1f;
 
-        float* origin = (float*)(base_address + OFFSETS.FUNC.G_RENDER_ORIGIN);
+        float* origin = (float*)(ba + OFFSETS.FUNC.G_RENDER_ORIGIN);
         float cx = origin[0], cy = origin[1], cz = origin[2];
 
-        nint ctx = base_address + OFFSETS.FUNC.RENDER_CTX;
+        nint ctx = ba + OFFSETS.FUNC.RENDER_CTX;
 
-        float* shader_color = (float*)(base_address + OFFSETS.FUNC.SHADER_COLOR);
-        byte* shader_flag = (byte*)(base_address + OFFSETS.FUNC.SHADER_COLOR_SET);
+        float* shader_color = (float*)(ba + OFFSETS.FUNC.SHADER_COLOR);
+        byte* shader_flag = (byte*)(ba + OFFSETS.FUNC.SHADER_COLOR_SET);
 
         if (tessellator.needs_flush())
             tessellator.end_flush();
@@ -48,6 +51,7 @@ public static unsafe class hitbox_renderer
             if (entity == player) continue;
 
             if (!memory.is_readable(entity + OFFSETS.FIELD.ENTITY_POS_OLD_X, 24)) continue;
+            if (!memory.is_readable(entity + OFFSETS.FIELD.ENTITY_HITBOX_WIDTH, 8)) continue;
             if (!entity_check.is_real_player(entity)) continue;
 
             float px_old = *(float*)(entity + OFFSETS.FIELD.ENTITY_POS_OLD_X);
@@ -62,12 +66,23 @@ public static unsafe class hitbox_renderer
             float py = py_old + (py_new - py_old) * partial;
             float pz = pz_old + (pz_new - pz_old) * partial;
 
+            float full_w = *(float*)(entity + OFFSETS.FIELD.ENTITY_HITBOX_WIDTH);
+            float full_h = *(float*)(entity + OFFSETS.FIELD.ENTITY_HITBOX_HEIGHT);
+
+            if (full_w < 0.01f || full_w > 20f) continue;
+            if (full_h < 0.01f || full_h > 20f) continue;
+
+            full_w += PADDING;
+            full_h += PADDING;
+
+            float half_w = full_w * 0.5f;
+
             float ex = px - cx;
-            float ey = py - cy - 1.62f;
+            float ey = py - cy - EYE_OFFSET - PADDING * 0.5f;
             float ez = pz - cz;
 
             float x0 = ex - half_w, x1 = ex + half_w;
-            float y0 = ey, y1 = ey + height;
+            float y0 = ey, y1 = ey + full_h;
             float z0 = ez - half_w, z1 = ez + half_w;
 
             float* corners_x = stackalloc float[8] { x0, x1, x1, x0, x0, x1, x1, x0 };
