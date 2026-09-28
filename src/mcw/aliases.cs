@@ -33,3 +33,4 @@ global using unsafe in_game_play_render_sig = delegate* unmanaged[Stdcall]<nint,
 global using unsafe tessellator_draw_sig = delegate* unmanaged[Stdcall]<nint, nint, long, void>;
 global using unsafe tessellator_vertex_sig = delegate* unmanaged[Stdcall]<nint, float, float, float, void>;
 global using unsafe tessellator_end_sig = delegate* unmanaged[Stdcall]<nint, nint, long, byte, void>;
+global using unsafe player_renderer_render_sig = delegate* unmanaged[Stdcall]<nint, nint, nint, nint, float, nint>;

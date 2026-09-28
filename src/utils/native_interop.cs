@@ -75,6 +75,9 @@ public static unsafe class native_interop
     [return: MarshalAs(UnmanagedType.Bool)]
     public static extern bool thread32_next(nint snapshot, ref THREADENTRY32 entry);
 
+    [DllImport("libGLESv2.dll", EntryPoint = "glLineWidth", CallingConvention = CallingConvention.Cdecl)]
+    public static extern void gl_line_width(float width);
+
     [DllImport("kernel32.dll", EntryPoint = "CloseHandle", SetLastError = true)]
     [return: MarshalAs(UnmanagedType.Bool)]
     public static extern bool close_handle(nint handle);

@@ -13,8 +13,6 @@ public sealed class freelook : module
     public static float FROZEN_PITCH;
     public static float FROZEN_YAW;
 
-    private const int PERSPECTIVE_THIRD_BACK = 1;
-
     private static int saved_perspective;
 
     public freelook() : base(category.Visual, "FreeLook", "", "", true)
@@ -32,11 +30,11 @@ public sealed class freelook : module
 
         LOCAL_PLAYER = player;
 
-        FROZEN_PITCH = CAM_PITCH = entity_rotation.get_pitch(player);
-        FROZEN_YAW = CAM_YAW = entity_rotation.get_yaw(player);
+        FROZEN_PITCH = CAM_PITCH = entity_check.get_pitch(player);
+        FROZEN_YAW = CAM_YAW = entity_check.get_yaw(player);
 
         saved_perspective = game_options.get_perspective();
-        game_options.set_perspective_allowed(PERSPECTIVE_THIRD_BACK);
+        game_options.set_perspective_allowed(1);
 
         ACTIVE = true;
         chat_response.send(lang_manager.get("freelook.module.enable"));

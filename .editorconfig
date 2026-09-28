@@ -17,3 +17,6 @@ dotnet_diagnostic.CS8618.severity = none
 
 # CS8625: Cannot convert null literal to non-nullable reference type.
 dotnet_diagnostic.CS8625.severity = none
+
+# CA2014: Do not use stackalloc in loops
+dotnet_diagnostic.CA2014.severity = none

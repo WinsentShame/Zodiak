@@ -12,7 +12,7 @@ public sealed unsafe class level_renderer_camera_setup_fog : hook_group
     public static float R = 1f, G = 1f, B = 1f;
 
     protected override string NAME => "level_renderer_camera_setup_fog";
-    protected override nint TARGET_OFFSET => OFFSETS.FUNC.LEVELRENDERERCAMERA_SETUPFOG;
+    protected override nint TARGET_OFFSET => OFFSETS.FUNC.LEVEL_RENDERER_CAMERA_SETUP_FOG;
     protected override void store_original(nint ptr) => original = (setup_fog_sig)ptr;
 
     protected override nint detour_ptr()
@@ -28,7 +28,7 @@ public sealed unsafe class level_renderer_camera_setup_fog : hook_group
 
         if (ACTIVE)
         {
-            nint slot = self + OFFSETS.FIELD.LEVELRENDERERCAMERA_FOGCOLOUR;
+            nint slot = self + OFFSETS.FIELD.LEVEL_RENDERER_CAMERA_FOG_COLOUR;
             if (memory.is_readable(slot, 12))
             {
                 float* p = (float*)slot;

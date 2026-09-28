@@ -17,7 +17,7 @@ public sealed unsafe class level_renderer_camera_render_sky : hook_group
     private static byte[] tod_original = Array.Empty<byte>();
 
     protected override string NAME => "level_renderer_camera_render_sky";
-    protected override nint TARGET_OFFSET => OFFSETS.FUNC.LEVELRENDERERCAMERA_RENDERSKY;
+    protected override nint TARGET_OFFSET => OFFSETS.FUNC.LEVEL_RENDERER_CAMERA_RENDER_SKY;
     protected override void store_original(nint ptr) => original = (render_sky_sig)ptr;
 
     protected override nint detour_ptr()
@@ -30,8 +30,8 @@ public sealed unsafe class level_renderer_camera_render_sky : hook_group
     {
         base_address = native_interop.get_module_handle_w(null);
 
-        sun_moon = (render_sun_moon_sig)(base_address + OFFSETS.FUNC.LEVELRENDERERCAMERA_RENDERSUNORMOON);
-        stars = (render_stars_sig)(base_address + OFFSETS.FUNC.LEVELRENDERERCAMERA_RENDERSTARS);
+        sun_moon = (render_sun_moon_sig)(base_address + OFFSETS.FUNC.LEVEL_RENDERER_CAMERA_RENDER_SUN_OR_MOON);
+        stars = (render_stars_sig)(base_address + OFFSETS.FUNC.LEVEL_RENDERER_CAMERA_RENDER_STARS);
 
         hide_sky = new byte_patch(signatures.HIDE_SKY, 6);
     }

@@ -52,13 +52,18 @@ public static class lang_manager
 
         ["wallhack.module.desc"] = ("Игроки видны сквозь стены.", "Players are visible through walls."),
         ["wallhack.usage"] = (".wallhack", ".wallhack"),
-        ["wallhack.module.enable"] = (project_name + " Wallhack включен.", project_name + " Wallhack enabled."),
-        ["wallhack.module.disable"] = (project_name + " Wallhack выключен.", project_name + " Wallhack disabled."),
+        ["wallhack.module.enable"] = (project_name + "Wallhack включен.", project_name + "Wallhack enabled."),
+        ["wallhack.module.disable"] = (project_name + "Wallhack выключен.", project_name + "Wallhack disabled."),
 
         ["hitboxes.usage"] = (".hitboxes", ".hitboxes"),
         ["hitboxes.module.desc"] = ("Хитбоксы игроков.", "Player hitboxes."),
-        ["hitboxes.module.enable"] = (project_name + " Hitboxes включены.", project_name + " Hitboxes enabled."),
-        ["hitboxes.module.disable"] = (project_name + " Hitboxes выключены.", project_name + " Hitboxes disabled."),
+        ["hitboxes.module.enable"] = (project_name + "Hitboxes включены.", project_name + "Hitboxes enabled."),
+        ["hitboxes.module.disable"] = (project_name + "Hitboxes выключены.", project_name + "Hitboxes disabled."),
+
+        ["freelook.usage"] = (".freelook", ".freelook"),
+        ["freelook.module.desc"] = ("Свободная камера.", "Free camera."),
+        ["freelook.module.enable"] = (project_name + " Freelook включен.", project_name + "Freelook enabled."),
+        ["freelook.module.disable"] = (project_name + "Freelook выключен.", project_name + "Freelook disabled."),
 
         ["watermark.module.desc"] = ("Дополнительная информация.", "Additional information."),
         ["watermark.module.usage"] = (".watermark", ".watermark"),

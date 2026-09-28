@@ -3,7 +3,6 @@ using System.Text;
 
 namespace Zodiak;
 
-// Гавно собачье
 public static unsafe class msvc_string
 {
     public const int SIZE = 0x20;

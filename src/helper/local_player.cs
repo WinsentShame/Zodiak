@@ -7,9 +7,9 @@ public static unsafe class local_player
         nint client = context.CLIENT_INSTANCE;
         if (client == 0) return 0;
 
-        nint player = *(nint*)(client + OFFSETS.FIELD.CLIENTINSTANCE_CAMERATARGET);
+        nint player = *(nint*)(client + OFFSETS.FIELD.CLIENT_INSTANCE_CAMERA_TARGET);
         if (player == 0)
-            player = *(nint*)(client + OFFSETS.FIELD.CLIENTINSTANCE_LOCALPLAYER);
+            player = *(nint*)(client + OFFSETS.FIELD.CLIENT_INSTANCE_LOCAL_PLAYER);
         return player;
     }
 

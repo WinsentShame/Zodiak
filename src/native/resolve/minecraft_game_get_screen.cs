@@ -10,7 +10,7 @@ public static unsafe class minecraft_game_get_screen
         if (base_address == 0) return false;
 
         get_name = (get_screen_name_sig)
-            (base_address + OFFSETS.FUNC.MINECRAFTGAME_GETSCREENNAME);
+            (base_address + OFFSETS.FUNC.MINECRAFT_GAME_GET_SCREEN_NAME);
 
         return get_name != null;
     }

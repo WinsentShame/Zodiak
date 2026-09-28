@@ -24,7 +24,7 @@ public static unsafe class font_draw_cached
         if (!resolved) return;
         if (context.MINECRAFT_GAME == 0) return;
 
-        nint font = *(nint*)(context.MINECRAFT_GAME + OFFSETS.FIELD.MINECRAFTGAME_FONT);
+        nint font = *(nint*)(context.MINECRAFT_GAME + OFFSETS.FIELD.MINECRAFT_GAME_FONT);
         if (font == 0) return;
 
         byte* str_buf = stackalloc byte[msvc_string.SIZE];

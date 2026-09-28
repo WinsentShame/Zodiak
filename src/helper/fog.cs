@@ -11,7 +11,7 @@ public static unsafe class fog
     }
 
     public static fog_ref camera(nint camera)
-        => slot(camera + OFFSETS.FIELD.LEVELRENDERERCAMERA_FOGCOLOUR);
+        => slot(camera + OFFSETS.FIELD.LEVEL_RENDERER_CAMERA_FOG_COLOUR);
 
     public static fog_ref sky_colour(nint base_address)
         => slot(base_address + OFFSETS.FUNC.G_SKYCOLOUR);

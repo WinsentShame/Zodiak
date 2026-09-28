@@ -4,25 +4,26 @@ public static class OFFSETS
 {
     public static class FUNC
     {
-        public const nint LOCALPLAYER_NORMALTICK = 0x4AA600;
+        public const nint IN_GAME_PLAY_SCREEN_RENDER = 0x3528C0;
 
-        public const nint REMOTEPLAYER_NORMALTICK = 0x4B3D10;
+        public const nint CLIENT_INSTANCE_ON_TICK = 0x11B2D0;
+        public const nint CLIENT_INSTANCE_LEAVE_GAME = 0x119C80;
 
-        public const nint INGAMEPLAYSCREEN_RENDER = 0x3528C0;
+        public const nint MINECRAFT_GAME_UPDATE_GRAPHICS = 0x131D00;
+        public const nint MINECRAFT_SCREEN_MODEL_SEND_CHAT_MESSAGE = 0x399C70;
+        public const nint MINECRAFT_GAME_GET_SCREEN_NAME = 0x138A70;
+        public const nint MINECRAFT_GAME_GET_OPTIONS = 0x137BD0;
 
-        public const nint CLIENTINSTANCE_ONTICK = 0x11B2D0;
-        public const nint CLIENTINSTANCE_LEAVEGAME = 0x119C80;
+        public const nint GUI_DATA_DISPLAY_CLIENT_MESSAGE = 0x1CDD30;
 
-        public const nint MINECRAFTGAME_UPDATEGRAPHICS = 0x131D00;
-        public const nint MINECRAFTSCREENMODEL_SENDCHATMESSAGE = 0x399C70;
-
-        public const nint GUIDATA_DISPLAYCLIENTMESSAGE = 0x1CDD30;
-
-        public const nint LEVELRENDERERCAMERA_SETUPFOG = 0x5AFE00;
-        public const nint LEVELRENDERERCAMERA_RENDERSKY = 0x5ACE40;
-        public const nint LEVELRENDERERCAMERA_RENDERSUNORMOON = 0x5AD330;
-        public const nint LEVELRENDERERCAMERA_RENDERSTARS = 0x5AD1D0;
-        public const nint LEVELRENDERERCAMERA_RENDERENTITIES = 0x5AE250;
+        public const nint LEVEL_RENDERER_RENDER_LEVEL = 0x5A9120;
+        public const nint LEVEL_RENDERER_CAMERA_RENDER_LEVEL = 0x5B07D0;
+        public const nint LEVEL_RENDERER_CAMERA_SETUP_FOG = 0x5AFE00;
+        public const nint LEVEL_RENDERER_CAMERA_RENDER_SKY = 0x5ACE40;
+        public const nint LEVEL_RENDERER_CAMERA_RENDER_SUN_OR_MOON = 0x5AD330;
+        public const nint LEVEL_RENDERER_CAMERA_RENDER_STARS = 0x5AD1D0;
+        public const nint LEVEL_RENDERER_CAMERA_RENDER_ENTITIES = 0x5AE250;
+        public const nint LEVEL_RENDERER_PLAYER_MOVE_CAMERA_TO_PLAYER = 0x5BA7E0;
 
         public const nint TEXTUREPTR_CTOR = 0x73F2B0;
         public const nint TEXTUREGROUP_REMOVEREF = 0x44C160;
@@ -39,9 +40,14 @@ public static class OFFSETS
         public const nint TESSELLATOR_BEGIN = 0x5D0660;
         public const nint TESSELLATOR_COLOUR = 0x5D0890;
         public const nint TESSELLATOR_VERTEXUV = 0x5D0960;
-        public const nint TESSELLATOR_DRAW2 = 0x5D19E0;
-        public const nint LEVELRENDERER_RENDERLEVEL = 0x5A9120;
         public const nint TESSELLATOR_DRAW = 0x5D1840;
+        public const nint TESSELLATOR_DRAW2 = 0x5D19E0;
+        public const nint TESSELLATOR_VERTEX = 0x5D0A90;
+        public const nint TESSELLATOR_END = 0x5D14F0;
+
+        public const nint OPTIONS_GET_PLAYER_VIEW_PERSPECTIVE = 0x488420;
+        public const nint OPTIONS_SET_PLAYER_VIEW_PERSPECTIVE = 0x4883A0;
+
         public const nint RENDER_CTX = 0x1913B40;
         public const nint SHADER_COLOR = 0x192AE08;
         public const nint SHADER_COLOR_SET = 0x192AE18;
@@ -49,27 +55,17 @@ public static class OFFSETS
         public const nint G_TESSELLATOR = 0x1925550;
         public const nint G_SKYMATRIXSTACK = 0x192AED0;
         public const nint G_SKYCOLOUR = 0x192AE08;
-
-        public const nint MINECRAFTGAME_GETSCREENNAME = 0x138A70;
+        public const nint G_RENDER_ORIGIN = 0x19436E8;
 
         public const nint MCE_RENDERCONTEXT_CREATEDEPTHSTATE = 0x726EF0;
         public const nint MCE_RENDERCONTEXT_APPLYDEPTHSTATE = 0x7271B0;
 
-        public const nint LEVELRENDERERCAMERA_RENDERLEVEL = 0x5B07D0;
-
         public const nint ENTITY_TURN = 0x9C2020;
-        public const nint LEVELRENDERERPLAYER_MOVECAMERATOPLAYER = 0x5BA7E0;
-
-        public const nint OPTIONS_GETPLAYERVIEWPERSPECTIVE = 0x488420;
-        public const nint OPTIONS_SETPLAYERVIEWPERSPECTIVE = 0x4883A0;
-        public const nint MINECRAFTGAME_GETOPTIONS = 0x137BD0;
 
         public const nint G_CAMERA_POS = 0x19436F8;
-        public const nint ENTITYRENDERDISPATCHER_RENDER = 0x55D640;
-        public const nint TESSELLATOR_VERTEX = 0x5D0A90;
-        public const nint TESSELLATOR_END = 0x5D14F0;
+        public const nint ENTITY_RENDER_DISPATCHER_RENDER = 0x55D640;
 
-        public const nint G_RENDER_ORIGIN = 0x19436E8;
+        public const nint PLAYERRENDERER_RENDER = 0x581910;
     }
 
     public static class DATA
@@ -82,18 +78,18 @@ public static class OFFSETS
 
     public static class FIELD
     {
-        public const nint MINECRAFTGAME_GUIDATA = 0x170;
-        public const nint MINECRAFTGAME_FONT = 0x88;
+        public const nint MINECRAFT_GAME_GUIDATA = 0x170;
+        public const nint MINECRAFT_GAME_FONT = 0x88;
 
-        public const nint LEVELRENDERERCAMERA_FOGCOLOUR = 0x3C8;
-        public const nint LEVELRENDERERCAMERA_SUNMATERIAL = 0x308;
+        public const nint LEVEL_RENDERER_CAMERA_FOG_COLOUR = 0x3C8;
+        public const nint LEVEL_RENDERER_CAMERA_SUN_MATERIAL = 0x308;
 
-        public const nint CLIENTINSTANCE_TEXTURECONTAINER = 0x30;
-        public const nint CLIENTINSTANCE_TEXTUREGROUP = 0x80;
-        public const nint CLIENTINSTANCE_CAMERATARGET = 0x50;
-        public const nint CLIENTINSTANCE_LOCALPLAYER = 0x60;
+        public const nint CLIENT_INSTANCE_TEXTURE_CONTAINER = 0x30;
+        public const nint CLIENT_INSTANCE_TEXTURE_GROUP = 0x80;
+        public const nint CLIENT_INSTANCE_CAMERA_TARGET = 0x50;
+        public const nint CLIENT_INSTANCE_LOCAL_PLAYER = 0x60;
 
-        public const nint RAKNETNETWORKPEER_LAST_PING = 232;
+        public const nint RAKNET_NETWORK_PEER_LAST_PING = 232;
 
         public const nint ENTITY_POS_X = 0x88;
         public const nint ENTITY_POS_Y = 0x8C;

@@ -9,7 +9,7 @@ public sealed unsafe class level_renderer_camera_render_level : hook_group
     private static render_entities_sig original_render_entities;
 
     protected override string NAME => "level_renderer_camera_render_level";
-    protected override nint TARGET_OFFSET => OFFSETS.FUNC.LEVELRENDERERCAMERA_RENDERLEVEL;
+    protected override nint TARGET_OFFSET => OFFSETS.FUNC.LEVEL_RENDERER_CAMERA_RENDER_LEVEL;
     protected override void store_original(nint ptr) => original = (render_level_sig)ptr;
 
     protected override nint detour_ptr()
@@ -22,7 +22,7 @@ public sealed unsafe class level_renderer_camera_render_level : hook_group
     {
         nint ba = native_interop.get_module_handle_w(null);
         original_render_entities = (render_entities_sig)
-            (ba + OFFSETS.FUNC.LEVELRENDERERCAMERA_RENDERENTITIES);
+            (ba + OFFSETS.FUNC.LEVEL_RENDERER_CAMERA_RENDER_ENTITIES);
     }
 
     [UnmanagedCallersOnly(CallConvs = new[] { typeof(CallConvStdcall) })]

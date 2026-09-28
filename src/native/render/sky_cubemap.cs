@@ -110,12 +110,12 @@ public static unsafe class sky_cubemap
         nint client = context.CLIENT_INSTANCE;
         if (client == 0) return 0;
 
-        nint slot = client + OFFSETS.FIELD.CLIENTINSTANCE_TEXTURECONTAINER;
+        nint slot = client + OFFSETS.FIELD.CLIENT_INSTANCE_TEXTURE_CONTAINER;
         if (!memory.is_readable(slot, 8)) return 0;
         nint container = *(nint*)slot;
         if (container == 0) return 0;
 
-        nint group_slot = container + OFFSETS.FIELD.CLIENTINSTANCE_TEXTUREGROUP;
+        nint group_slot = container + OFFSETS.FIELD.CLIENT_INSTANCE_TEXTURE_GROUP;
         if (!memory.is_readable(group_slot, 8)) return 0;
         return *(nint*)group_slot;
     }
@@ -126,7 +126,7 @@ public static unsafe class sky_cubemap
 
         nint base_address = native_interop.get_module_handle_w(null);
 
-        nint material = camera + OFFSETS.FIELD.LEVELRENDERERCAMERA_SUNMATERIAL;
+        nint material = camera + OFFSETS.FIELD.LEVEL_RENDERER_CAMERA_SUN_MATERIAL;
         nint tess_address = base_address + OFFSETS.FUNC.G_TESSELLATOR;
         nint stack_address = base_address + OFFSETS.FUNC.G_SKYMATRIXSTACK;
 

@@ -12,6 +12,10 @@
 	</PropertyGroup>
 
 	<ItemGroup>
+	  <None Remove="src\native\render\yvowdl4w.klt~" />
+	</ItemGroup>
+
+	<ItemGroup>
 		<PackageReference Include="NativeDllMain" Version="1.0.0" />
 	</ItemGroup>
 

@@ -8,7 +8,7 @@ public sealed unsafe class level_renderer_camera_render_entities : hook_group
     private static render_entities_sig original;
 
     protected override string NAME => "level_renderer_camera_render_entities";
-    protected override nint TARGET_OFFSET => OFFSETS.FUNC.LEVELRENDERERCAMERA_RENDERENTITIES;
+    protected override nint TARGET_OFFSET => OFFSETS.FUNC.LEVEL_RENDERER_CAMERA_RENDER_ENTITIES;
     protected override void store_original(nint ptr) => original = (render_entities_sig)ptr;
 
     protected override nint detour_ptr()
@@ -27,13 +27,7 @@ public sealed unsafe class level_renderer_camera_render_entities : hook_group
         bool prev = wallhack_state.IN_ENTITY_PASS;
         if (wallhack_state.ACTIVE) wallhack_state.IN_ENTITY_PASS = true;
 
-        nint result;
-        try { result = original(self, partial); }
+        try { return original(self, partial); }
         finally { wallhack_state.IN_ENTITY_PASS = prev; }
-
-        if (hitboxes.ACTIVE && !wallhack_state.SECOND_PASS)
-            hitbox_renderer.draw_all(partial);
-
-        return result;
     }
 }

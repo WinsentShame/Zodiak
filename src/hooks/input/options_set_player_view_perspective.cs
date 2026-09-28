@@ -8,7 +8,7 @@ public sealed unsafe class options_set_player_view_perspective : hook_group
     private static set_perspective_sig original;
 
     protected override string NAME => "options_set_player_view_perspective";
-    protected override nint TARGET_OFFSET => OFFSETS.FUNC.OPTIONS_SETPLAYERVIEWPERSPECTIVE;
+    protected override nint TARGET_OFFSET => OFFSETS.FUNC.OPTIONS_SET_PLAYER_VIEW_PERSPECTIVE;
     protected override void store_original(nint ptr) => original = (set_perspective_sig)ptr;
 
     protected override nint detour_ptr()

@@ -8,7 +8,7 @@ public sealed unsafe class client_instance_on_tick : hook_group
     private static on_tick_sig original;
 
     protected override string NAME => "client_instance_on_tick";
-    protected override nint TARGET_OFFSET => OFFSETS.FUNC.CLIENTINSTANCE_ONTICK;
+    protected override nint TARGET_OFFSET => OFFSETS.FUNC.CLIENT_INSTANCE_ON_TICK;
     protected override void store_original(nint ptr) => original = (on_tick_sig)ptr;
 
     protected override nint detour_ptr()

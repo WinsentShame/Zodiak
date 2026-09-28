@@ -8,7 +8,7 @@ public sealed unsafe class entity_render_dispatcher_render : hook_group
     private static entity_render_disp_sig original;
 
     protected override string NAME => "entity_render_dispatcher_render";
-    protected override nint TARGET_OFFSET => OFFSETS.FUNC.ENTITYRENDERDISPATCHER_RENDER;
+    protected override nint TARGET_OFFSET => OFFSETS.FUNC.ENTITY_RENDER_DISPATCHER_RENDER;
     protected override void store_original(nint ptr) => original = (entity_render_disp_sig)ptr;
 
     protected override nint detour_ptr()
@@ -24,7 +24,7 @@ public sealed unsafe class entity_render_dispatcher_render : hook_group
 
         nint result = original(self, entity, pos, a4, a5);
 
-        if (hitboxes.ACTIVE && entity != 0 && entity_type.is_player(entity))
+        if (hitboxes.ACTIVE && entity != 0 && entity_check.is_real_player(entity))
         {
             nint player = local_player.get();
             if (entity != player)

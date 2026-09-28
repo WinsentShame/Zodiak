@@ -34,7 +34,7 @@ public sealed class watermark : module
     {
         if (context.NETWORK_PEER == 0) return 0;
 
-        int raw = *(int*)(context.NETWORK_PEER + OFFSETS.FIELD.RAKNETNETWORKPEER_LAST_PING);
+        int raw = *(int*)(context.NETWORK_PEER + OFFSETS.FIELD.RAKNET_NETWORK_PEER_LAST_PING);
 
         if (raw < 0 || raw > 2000)
             return last_good_ping;

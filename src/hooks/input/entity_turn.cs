@@ -22,19 +22,19 @@ public sealed unsafe class entity_turn : hook_group
     {
         if (original == null) return;
 
-        if (!freelook.ACTIVE || self != freelook.LOCAL_PLAYER || !entity_rotation.is_valid(self))
+        if (!freelook.ACTIVE || self != freelook.LOCAL_PLAYER || !entity_check.is_valid(self))
         {
             original(self, delta, fast);
             return;
         }
 
-        entity_rotation.write(self, freelook.CAM_YAW, freelook.CAM_PITCH);
+        entity_check.write_rotation(self, freelook.CAM_YAW, freelook.CAM_PITCH);
 
         original(self, delta, fast);
 
-        freelook.CAM_YAW = entity_rotation.get_yaw(self);
-        freelook.CAM_PITCH = entity_rotation.get_pitch(self);
+        freelook.CAM_YAW = entity_check.get_yaw(self);
+        freelook.CAM_PITCH = entity_check.get_pitch(self);
 
-        entity_rotation.write(self, freelook.FROZEN_YAW, freelook.FROZEN_PITCH);
+        entity_check.write_rotation(self, freelook.FROZEN_YAW, freelook.FROZEN_PITCH);
     }
 }

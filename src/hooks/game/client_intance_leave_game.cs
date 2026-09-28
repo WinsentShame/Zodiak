@@ -7,7 +7,7 @@ public sealed unsafe class client_intance_leave_game : hook_group
     private static leave_game_sig original;
 
     protected override string NAME => "client_instance_leave_game";
-    protected override nint TARGET_OFFSET => OFFSETS.FUNC.CLIENTINSTANCE_LEAVEGAME;
+    protected override nint TARGET_OFFSET => OFFSETS.FUNC.CLIENT_INSTANCE_LEAVE_GAME;
     protected override void store_original(nint ptr) => original = (leave_game_sig)ptr;
 
     protected override nint detour_ptr()

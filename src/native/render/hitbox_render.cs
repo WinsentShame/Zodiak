@@ -24,19 +24,41 @@ public static unsafe class hitbox_renderer
 
     public static void draw_all(float partial)
     {
-        if (!resolve()) return;
-        if (!memory.is_readable(tessellator, 0x140)) return;
+        if (!resolve())
+        {
+            entity_cache.clear();
+            return;
+        }
+
+        if (!memory.is_readable(tessellator, 0x140))
+        {
+            entity_cache.clear();
+            return;
+        }
 
         nint ba = native_interop.get_module_handle_w(null);
-        if (ba == 0) return;
+        if (ba == 0)
+        {
+            entity_cache.clear();
+            return;
+        }
 
         nint player = local_player.get();
+        if (!local_player.is_valid(player))
+        {
+            entity_cache.clear();
+            return;
+        }
+
+        if (partial < 0f) partial = 0f;
+        if (partial > 1f) partial = 1f;
 
         float* origin = (float*)(ba + OFFSETS.FUNC.G_RENDER_ORIGIN);
         float cx = origin[0], cy = origin[1], cz = origin[2];
 
         var begin = (tessellator_begin_sig)(ba + OFFSETS.FUNC.TESSELLATOR_BEGIN);
         var vertex = (tessellator_vertex_sig)(ba + OFFSETS.FUNC.TESSELLATOR_VERTEX);
+        var colour = (tessellator_colour_sig)(ba + OFFSETS.FUNC.TESSELLATOR_COLOUR);
         var end = (tessellator_end_sig)(ba + OFFSETS.FUNC.TESSELLATOR_END);
         var draw = (tessellator_draw_sig)(ba + OFFSETS.FUNC.TESSELLATOR_DRAW);
 
@@ -53,9 +75,11 @@ public static unsafe class hitbox_renderer
             end(tessellator, (nint)flush_buf, 0, 0);
         }
 
+        byte flag_saved = *shader_flag;
+
         *shader_flag = 1;
         shader_color[0] = 1f;
-        shader_color[1] = 1f;
+        shader_color[1] = 0f;
         shader_color[2] = 1f;
         shader_color[3] = 1f;
 
@@ -63,19 +87,25 @@ public static unsafe class hitbox_renderer
         {
             if (entity == 0) continue;
             if (entity == player) continue;
-            if (!entity_type.is_player(entity)) continue;
 
-            float px = *(float*)(entity + OFFSETS.FIELD.ENTITY_POS_X);
-            float py = *(float*)(entity + OFFSETS.FIELD.ENTITY_POS_Y);
-            float pz = *(float*)(entity + OFFSETS.FIELD.ENTITY_POS_Z);
+            if (!memory.is_readable(entity + OFFSETS.FIELD.ENTITY_POS_OLD_X, 24)) continue;
+            if (!entity_check.is_real_player(entity)) continue;
 
-            float ox = *(float*)(entity + OFFSETS.FIELD.ENTITY_POS_OLD_X);
-            float oy = *(float*)(entity + OFFSETS.FIELD.ENTITY_POS_OLD_Y);
-            float oz = *(float*)(entity + OFFSETS.FIELD.ENTITY_POS_OLD_Z);
+            float px_old = *(float*)(entity + OFFSETS.FIELD.ENTITY_POS_OLD_X);
+            float py_old = *(float*)(entity + OFFSETS.FIELD.ENTITY_POS_OLD_Y);
+            float pz_old = *(float*)(entity + OFFSETS.FIELD.ENTITY_POS_OLD_Z);
 
-            float ex = ox + (px - ox) * partial - cx;
-            float ey = oy + (py - oy) * partial - cy - 1.62f;
-            float ez = oz + (pz - oz) * partial - cz;
+            float px_new = *(float*)(entity + OFFSETS.FIELD.ENTITY_POS_X);
+            float py_new = *(float*)(entity + OFFSETS.FIELD.ENTITY_POS_Y);
+            float pz_new = *(float*)(entity + OFFSETS.FIELD.ENTITY_POS_Z);
+
+            float px = px_old + (px_new - px_old) * partial;
+            float py = py_old + (py_new - py_old) * partial;
+            float pz = pz_old + (pz_new - pz_old) * partial;
+
+            float ex = px - cx;
+            float ey = py - cy - 1.62f;
+            float ez = pz - cz;
 
             float x0 = ex - half_w, x1 = ex + half_w;
             float y0 = ey, y1 = ey + height;
@@ -86,6 +116,8 @@ public static unsafe class hitbox_renderer
             float* corners_z = stackalloc float[8] { z0, z0, z1, z1, z0, z0, z1, z1 };
 
             begin(tessellator, 4, edge_count * 2);
+            colour(tessellator, 255, 0, 255, 255);
+
             for (int e = 0; e < edge_count; e++)
             {
                 int a = edges_a[e];
@@ -96,7 +128,7 @@ public static unsafe class hitbox_renderer
             draw(tessellator, ctx, 0);
         }
 
-        *shader_flag = 0;
+        *shader_flag = flag_saved;
 
         byte* final_buf = stackalloc byte[0x200];
         for (int i = 0; i < 0x200; i++) final_buf[i] = 0;

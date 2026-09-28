@@ -15,7 +15,7 @@ public static unsafe class chat_response
 
 
         display = (display_client_message_sig)
-            (base_address + OFFSETS.FUNC.GUIDATA_DISPLAYCLIENTMESSAGE);
+            (base_address + OFFSETS.FUNC.GUI_DATA_DISPLAY_CLIENT_MESSAGE);
 
         resolved = display != null;
         return resolved;
@@ -28,7 +28,7 @@ public static unsafe class chat_response
         nint game = context.MINECRAFT_GAME;
         if (game == 0) return;
 
-        nint gui_data = *(nint*)(game + OFFSETS.FIELD.MINECRAFTGAME_GUIDATA);
+        nint gui_data = *(nint*)(game + OFFSETS.FIELD.MINECRAFT_GAME_GUIDATA);
         if (gui_data == 0) return;
 
         byte* buffer = stackalloc byte[msvc_string.SIZE];

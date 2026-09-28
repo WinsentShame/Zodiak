@@ -18,7 +18,6 @@ public static class program
         new minecraft_screen_model_send_chat_message().install();
         new level_renderer_camera_setup_fog().install();
         new level_renderer_camera_render_sky().install();
-        new level_renderer_camera_render_entities().install();
         new entity_turn().install();
         new level_renderer_player_move_camera_to_player().install();
         new options_set_player_view_perspective().install();
@@ -26,10 +25,9 @@ public static class program
         new mce_rendercontext_create_depth_state().install();
         new mce_rendercontext_apply_depth_state().install();
         new in_game_play_screen_render().install();
-        new entity_render_dispatcher_render().install();
-
-        new local_player_normal_tick().install();
-        new remote_player_normal_tick().install();
+        new level_renderer_camera_render_entities().install();
+        new player_renderer_render().install();
+        new in_game_play_screen_render().install();
 
         chat_response.resolve();
         font_draw_cached.resolve();
