@@ -79,7 +79,7 @@ public static unsafe class hitbox_renderer
 
         *shader_flag = 1;
         shader_color[0] = 1f;
-        shader_color[1] = 0f;
+        shader_color[1] = 1f;
         shader_color[2] = 1f;
         shader_color[3] = 1f;
 
