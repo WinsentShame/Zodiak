@@ -27,7 +27,6 @@ public sealed unsafe class minecraft_game_update_graphics : hook_group
         if (self != 0 && context.MINECRAFT_GAME != self)
             context.MINECRAFT_GAME = self;
 
-       
         watermark.tick();
     }
 }

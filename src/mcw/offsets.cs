@@ -17,6 +17,7 @@ public static class OFFSETS
         public const nint G_SKYMATRIXSTACK = 0x192AED0;
         public const nint G_TESSELLATOR = 0x1925550;
 
+        public const nint GUI_DATA_GUI_SCALE = 0x16EC0A4;
         public const nint GUI_DATA_DISPLAY_CLIENT_MESSAGE = 0x1CDD30;
 
         public const nint IN_GAME_PLAY_SCREEN_RENDER = 0x3528C0;
@@ -96,6 +97,8 @@ public static class OFFSETS
 
         public const nint MINECRAFT_GAME_FONT = 0x88;
         public const nint MINECRAFT_GAME_GUIDATA = 0x170;
+        public const nint MINECRAFT_GAME_SCREEN_WIDTH = 0x4C;
+        public const nint MINECRAFT_GAME_SCREEN_HEIGHT = 0x50;
 
         public const nint RAKNET_NETWORK_PEER_LAST_PING = 232;
     }
