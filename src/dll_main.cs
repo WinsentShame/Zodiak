@@ -29,9 +29,11 @@ public static class program
         new player_renderer_render().install();
         new in_game_play_screen_render().install();
 
+        tessellator.resolve();
         chat_response.resolve();
         font_draw_cached.resolve();
         minecraft_game_get_screen.resolve();
+
 
         module_manager.register(new help());
         module_manager.register(new fog_color());

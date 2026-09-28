@@ -20,9 +20,9 @@ public sealed unsafe class level_renderer_camera_render_level : hook_group
 
     protected override void on_installed()
     {
-        nint ba = native_interop.get_module_handle_w(null);
+        nint base_address = native_interop.get_module_handle_w(null);
         original_render_entities = (render_entities_sig)
-            (ba + OFFSETS.FUNC.LEVEL_RENDERER_CAMERA_RENDER_ENTITIES);
+            (base_address + OFFSETS.FUNC.LEVEL_RENDERER_CAMERA_RENDER_ENTITIES);
     }
 
     [UnmanagedCallersOnly(CallConvs = new[] { typeof(CallConvStdcall) })]

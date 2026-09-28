@@ -125,20 +125,17 @@ public static unsafe class sky_cubemap
         if (!ready || camera == 0) return;
 
         nint base_address = native_interop.get_module_handle_w(null);
+        if (base_address == 0) return;
+
+        if (!tessellator.resolve() || !tessellator.valid()) return;
 
         nint material = camera + OFFSETS.FIELD.LEVEL_RENDERER_CAMERA_SUN_MATERIAL;
-        nint tess_address = base_address + OFFSETS.FUNC.G_TESSELLATOR;
         nint stack_address = base_address + OFFSETS.FUNC.G_SKYMATRIXSTACK;
 
-        if (!memory.is_readable(tess_address, 0x140)) return;
         if (!memory.is_readable(stack_address, 0x20)) return;
 
         var push = (matrixstack_push_sig)(base_address + OFFSETS.FUNC.MATRIXSTACK_PUSH);
         var scale = (matrix_scale_sig)(base_address + OFFSETS.FUNC.MATRIX_SCALE);
-        var begin = (tessellator_begin_sig)(base_address + OFFSETS.FUNC.TESSELLATOR_BEGIN);
-        var colour = (tessellator_colour_sig)(base_address + OFFSETS.FUNC.TESSELLATOR_COLOUR);
-        var vertex_uv = (tessellator_vertexuv_sig)(base_address + OFFSETS.FUNC.TESSELLATOR_VERTEXUV);
-        var draw2 = (tessellator_draw2_sig)(base_address + OFFSETS.FUNC.TESSELLATOR_DRAW2);
 
         byte* guard = stackalloc byte[16];
         for (int i = 0; i < 16; i++) guard[i] = 0;
@@ -154,12 +151,10 @@ public static unsafe class sky_cubemap
         {
             nint texture = faces + sky_cube.FACE_SIZE * face;
 
-            byte* state = (byte*)tess_address;
-            state[0x170] = 0;
-            state[0x125] = 0;
+            tessellator.reset_state();
 
-            begin(tess_address, 1, 8);
-            colour(tess_address, 255, 255, 255, 255);
+            tessellator.begin(1, 8);
+            tessellator.colour(255, 255, 255, 255);
 
             for (int pass = 0; pass < 2; pass++)
             {
@@ -167,11 +162,11 @@ public static unsafe class sky_cubemap
                 {
                     int idx = pass == 0 ? step : 3 - step;
                     sky_cube.corner(face, idx, out float x, out float y, out float z);
-                    vertex_uv(tess_address, x, y, z, sky_cube.U[idx], sky_cube.V[idx]);
+                    tessellator.vertex_uv(x, y, z, sky_cube.U[idx], sky_cube.V[idx]);
                 }
             }
 
-            draw2(tess_address, material, texture);
+            tessellator.draw2(material, texture);
         }
 
         byte* stack = (byte*)stack_address;

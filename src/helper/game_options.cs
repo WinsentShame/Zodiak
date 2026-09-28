@@ -8,10 +8,10 @@ public static unsafe class game_options
     {
         if (context.MINECRAFT_GAME == 0) return 0;
 
-        nint ba = native_interop.get_module_handle_w(null);
-        if (ba == 0) return 0;
+        nint base_address = native_interop.get_module_handle_w(null);
+        if (base_address == 0) return 0;
 
-        var fn = (get_options_sig)(ba + OFFSETS.FUNC.MINECRAFT_GAME_GET_OPTIONS);
+        var fn = (get_options_sig)(base_address + OFFSETS.FUNC.MINECRAFT_GAME_GET_OPTIONS);
         return fn(context.MINECRAFT_GAME);
     }
 
