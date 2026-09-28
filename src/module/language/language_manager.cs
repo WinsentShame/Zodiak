@@ -55,10 +55,10 @@ public static class lang_manager
         ["wallhack.module.enable"] = (project_name + "Wallhack включен.", project_name + "Wallhack enabled."),
         ["wallhack.module.disable"] = (project_name + "Wallhack выключен.", project_name + "Wallhack disabled."),
 
-        ["hitboxes.usage"] = (".hitboxes", ".hitboxes"),
-        ["hitboxes.module.desc"] = ("Хитбоксы игроков.", "Player hitboxes."),
-        ["hitboxes.module.enable"] = (project_name + "Hitboxes включены.", project_name + "Hitboxes enabled."),
-        ["hitboxes.module.disable"] = (project_name + "Hitboxes выключены.", project_name + "Hitboxes disabled."),
+        ["esp.usage"] = (".esp", ".esp"),
+        ["esp.module.desc"] = ("ESP хитбоксы игроков.", "Player ESP boxes."),
+        ["esp.module.enable"] = (project_name + "ESP включен.", project_name + "ESP enabled."),
+        ["esp.module.disable"] = (project_name + "ESP выключен.", project_name + "ESP disabled."),
 
         ["freelook.usage"] = (".freelook", ".freelook"),
         ["freelook.module.desc"] = ("Свободная камера.", "Free camera."),

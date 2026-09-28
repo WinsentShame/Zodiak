@@ -24,7 +24,7 @@ public sealed unsafe class player_renderer_render : hook_group
 
         nint result = original(self, entity, pos, a4, partial);
 
-        if (hitboxes.ACTIVE && entity != 0 && entity_check.is_real_player(entity))
+        if (esp.ACTIVE && entity != 0 && entity_check.is_real_player(entity))
         {
             nint local = local_player.get();
             if (entity != local)
