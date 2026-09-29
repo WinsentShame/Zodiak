@@ -90,6 +90,17 @@ public sealed unsafe class level_renderer_camera_render_sky : hook_group
             tod_original = Array.Empty<byte>();
         }
     }
+    public static void restore_patches()
+    {
+        if (hide_sky != null)
+            hide_sky.revert();
+
+        if (tod_original.Length != 0)
+        {
+            memory.patch(tod_address, tod_original);
+            tod_original = Array.Empty<byte>();
+        }
+    }
 
     #endregion
 

@@ -71,6 +71,11 @@ public static class lang_manager
         ["hitbox.module.disable"] = (project_name + "Hitbox выключен.", project_name + "Hitbox disabled."),
         ["hitbox.module.size.set"] = (project_name + "Hitbox → x{0:F2}", project_name + "Hitbox → x{0:F2}"),
 
+        ["uninject.module.desc"] = ("Снимает хуки и выключает модули.", "Removes hooks and disables modules."),
+        ["uninject.usage"] = (".uninject", ".uninject"),
+        ["uninject.module.bye"] = (project_name + "Выгрузка...", project_name + "Unloading..."),
+        ["uninject.module.done"] = (project_name + "Готово.", project_name + "Done."),
+
         ["watermark.module.desc"] = ("Дополнительная информация.", "Additional information."),
         ["watermark.module.usage"] = (".watermark", ".watermark"),
     };

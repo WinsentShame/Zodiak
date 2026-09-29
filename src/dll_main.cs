@@ -45,5 +45,6 @@ public static class program
         module_manager.register(new hitbox());
         module_manager.register(new binds());
         module_manager.register(new lang());
+        module_manager.register(new uninject());
     }
 }

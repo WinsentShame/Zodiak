@@ -74,6 +74,8 @@ public abstract unsafe class hook_group
         INSTALLED = true;
 
         on_installed();
+        hook_registry.register(this);
+
         return true;
     }
 
