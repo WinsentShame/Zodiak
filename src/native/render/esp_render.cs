@@ -3,7 +3,8 @@
 public static unsafe class esp_renderer
 {
     private const float EYE_OFFSET = 1.62f;
-    private const float PADDING = 0.06f;
+    private const float PLAYER_PADDING = 0.03f;
+    private const float CHEST_MARGIN = 0.0625f;
     private const int edge_count = 12;
 
     private static readonly int[] edges_a = { 0, 1, 2, 3, 4, 5, 6, 7, 0, 1, 2, 3 };
@@ -20,6 +21,7 @@ public static unsafe class esp_renderer
             || !local_player.is_valid(player))
         {
             entity_cache.clear();
+            chest_cache.clear();
             return;
         }
 
@@ -45,6 +47,23 @@ public static unsafe class esp_renderer
         shader_color[2] = 1f;
         shader_color[3] = 1f;
 
+        if (esp.PLAYER_MODE)
+            draw_players(player, partial, cx, cy, cz, ctx);
+
+        if (esp.CHEST_MODE)
+            draw_chests(cx, cy, cz, ctx);
+
+        *shader_flag = flag_saved;
+
+        tessellator.end_flush();
+
+        entity_cache.clear();
+        //chest_cache.clear();
+    }
+
+    private static void draw_players(nint player, float partial,
+                                     float cx, float cy, float cz, nint ctx)
+    {
         foreach (nint entity in entity_cache.all())
         {
             if (entity == 0) continue;
@@ -72,41 +91,57 @@ public static unsafe class esp_renderer
             if (full_w < 0.01f || full_w > 20f) continue;
             if (full_h < 0.01f || full_h > 20f) continue;
 
-            full_w += PADDING;
-            full_h += PADDING;
+            full_w += PLAYER_PADDING;
+            full_h += PLAYER_PADDING;
 
             float half_w = full_w * 0.5f;
 
             float ex = px - cx;
-            float ey = py - cy - EYE_OFFSET - PADDING * 0.5f;
+            float ey = py - cy - EYE_OFFSET - PLAYER_PADDING * 0.5f;
             float ez = pz - cz;
 
             float x0 = ex - half_w, x1 = ex + half_w;
             float y0 = ey, y1 = ey + full_h;
             float z0 = ez - half_w, z1 = ez + half_w;
 
-            float* corners_x = stackalloc float[8] { x0, x1, x1, x0, x0, x1, x1, x0 };
-            float* corners_y = stackalloc float[8] { y0, y0, y0, y0, y1, y1, y1, y1 };
-            float* corners_z = stackalloc float[8] { z0, z0, z1, z1, z0, z0, z1, z1 };
+            emit_box(x0, y0, z0, x1, y1, z1, ctx);
+        }
+    }
 
-            tessellator.begin(4, edge_count * 2);
-            tessellator.colour(255, 255, 255, 255);
+    private static void draw_chests(float cx, float cy, float cz, nint ctx)
+    {
+        foreach (var (bx, by, bz) in chest_cache.all())
+        {
+            float ex = bx - cx;
+            float ey = by - cy;
+            float ez = bz - cz;
 
-            for (int e = 0; e < edge_count; e++)
-            {
-                int a = edges_a[e];
-                int b = edges_b[e];
-                tessellator.vertex(corners_x[a], corners_y[a], corners_z[a]);
-                tessellator.vertex(corners_x[b], corners_y[b], corners_z[b]);
-            }
+            float x0 = ex + CHEST_MARGIN, x1 = ex + 1f - CHEST_MARGIN;
+            float y0 = ey, y1 = ey + 1f;
+            float z0 = ez + CHEST_MARGIN, z1 = ez + 1f - CHEST_MARGIN;
 
-            tessellator.draw(ctx, 0);
+            emit_box(x0, y0, z0, x1, y1, z1, ctx);
+        }
+    }
+
+    private static void emit_box(float x0, float y0, float z0,
+                                 float x1, float y1, float z1, nint ctx)
+    {
+        float* corners_x = stackalloc float[8] { x0, x1, x1, x0, x0, x1, x1, x0 };
+        float* corners_y = stackalloc float[8] { y0, y0, y0, y0, y1, y1, y1, y1 };
+        float* corners_z = stackalloc float[8] { z0, z0, z1, z1, z0, z0, z1, z1 };
+
+        tessellator.begin(4, edge_count * 2);
+        tessellator.colour(255, 255, 255, 255);
+
+        for (int e = 0; e < edge_count; e++)
+        {
+            int a = edges_a[e];
+            int b = edges_b[e];
+            tessellator.vertex(corners_x[a], corners_y[a], corners_z[a]);
+            tessellator.vertex(corners_x[b], corners_y[b], corners_z[b]);
         }
 
-        *shader_flag = flag_saved;
-
-        tessellator.end_flush();
-
-        entity_cache.clear();
+        tessellator.draw(ctx, 0);
     }
 }

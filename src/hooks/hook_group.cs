@@ -84,7 +84,6 @@ public abstract unsafe class hook_group
         if (!INSTALLED) return;
 
         native_interop.mh_disable_hook(target);
-        native_interop.mh_remove_hook(target);
         INSTALLED = false;
 
         on_uninstalled();

@@ -24,6 +24,7 @@ public sealed unsafe class client_intance_leave_game : hook_group
         context.MINECRAFT_GAME = 0;
 
         hitbox_state.forget();
+        chest_cache.clear();
 
         return original(self, flag);
     }

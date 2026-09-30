@@ -34,3 +34,5 @@ global using unsafe tessellator_draw_sig = delegate* unmanaged[Stdcall]<nint, ni
 global using unsafe tessellator_vertex_sig = delegate* unmanaged[Stdcall]<nint, float, float, float, void>;
 global using unsafe tessellator_end_sig = delegate* unmanaged[Stdcall]<nint, nint, long, byte, void>;
 global using unsafe player_renderer_render_sig = delegate* unmanaged[Stdcall]<nint, nint, nint, nint, float, nint>;
+global using unsafe chest_renderer_render_sig = delegate* unmanaged[Stdcall]<nint, nint, float, void>;
+global using unsafe get_block_id_sig = delegate* unmanaged[Stdcall]<nint, nint, nint, nint>;

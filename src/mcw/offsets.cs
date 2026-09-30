@@ -66,6 +66,9 @@ public static class OFFSETS
 
         public const nint TEXTUREGROUP_REMOVEREF = 0x44C160;
         public const nint TEXTUREPTR_CTOR = 0x73F2B0;
+
+        public const nint CHEST_RENDERER_RENDER = 0x53F750;
+        public const nint BLOCK_SOURCE_GET_BLOCK_ID = 0xB73250;
     }
 
     public static class DATA
@@ -104,5 +107,6 @@ public static class OFFSETS
         public const nint MINECRAFT_GAME_SCREEN_HEIGHT = 0x50;
 
         public const nint RAKNET_NETWORK_PEER_LAST_PING = 232;
+        public const nint ENTITY_BLOCK_SOURCE = 0xD8;
     }
 }
